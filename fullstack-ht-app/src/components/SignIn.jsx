@@ -16,6 +16,9 @@ const styles = StyleSheet.create({
   fieldContainer: {
     marginBottom: 15,
   },
+  button: {
+    padding: 10
+  }
 });
 
 const initialValues = {

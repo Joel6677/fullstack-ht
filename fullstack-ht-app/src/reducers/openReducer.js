@@ -1,6 +1,6 @@
 const openReducer = (state = '', action) => {
     switch(action.type) {
-      case 'OPEN_MENY':
+      case 'OPEN_MENU':
         return action.data;
       default:
         return state;

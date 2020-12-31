@@ -11,7 +11,7 @@ export const reducer = (state, action) => {
 
 
 const initialState = {
-    open: undefined
+    open: false
 };
 
 export const StateContext = createContext(initialState);

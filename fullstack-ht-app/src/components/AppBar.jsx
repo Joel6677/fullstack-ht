@@ -17,15 +17,16 @@ import Text from './Text';
 import AuthStorageContext from '../contexts/AuthStorageContext';
 import useAuthorizedUser from '../hooks/useAuthorizedUser';
 
-// import Button from './Button';
-import { IconButton } from 'react-native-paper';
 import { StateContext } from '../state';
-  
+import { IconButton } from 'react-native-paper';
 
 const styles = StyleSheet.create({
   container: {
-    paddingTop: Constants.statusBarHeight,
+    // paddingTop: Constants.statusBarHeight,
     backgroundColor: theme.colors.appBarBackground,
+    width: '100%',
+    position: 'fixed',
+    zIndex: 5
   },
   scrollView: {
     flexDirection: 'row',
@@ -57,18 +58,6 @@ const AppBarTab = ({ children, ...props }) => {
   );
 };
 
-// const AppBarTab = ({ children, ...props }) => { 
-//   console.log('children: ', children);
-//   console.log('props: ', props);
-//   // on press {...props}
-//   return (
-//   <View style={styles.tabContainer}>
-//       <Button onPress={() => console.log('Button pressed')} >{children}</Button> 
-//   </View>
-
-//   );
-// };
-
 const AppBar = () => {
   const apolloClient = useApolloClient();
   const authStorage = useContext(AuthStorageContext);
@@ -77,8 +66,6 @@ const AppBar = () => {
   const { authorizedUser } = useAuthorizedUser();
 
   const { state, dispatch } = useContext(StateContext);
-  
-
 
   const onSignOut = async () => {
     await authStorage.removeAccessToken();
@@ -86,14 +73,11 @@ const AppBar = () => {
     history.push('/');
   };
 
-  console.log('open: ', state.open);
 
   return (
-    
-
     <View style={styles.container}>
       <ScrollView style={styles.scrollView} horizontal> 
-        <IconButton icon="menu" color={theme.colors.primary} size={40} onPress={() => dispatch({type: "SET_OPEN", payload: !state.open})} 
+      <IconButton icon="menu" color={theme.colors.primary} size={40} onPress={() => dispatch({type: "SET_OPEN", payload: !state.open})} 
         ></IconButton>
         {authorizedUser ? (
           <>
@@ -106,6 +90,9 @@ const AppBar = () => {
             </Link>
             <Link to="/sign-up" component={AppBarTab}>
               Sign up
+            </Link>
+            <Link to="/" component={AppBarTab}>
+              Home
             </Link>
           </>
         )}
