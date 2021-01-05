@@ -1,65 +1,54 @@
-import React, { useContext, useRef } from 'react';
+import React, { useContext, useRef, useEffect } from 'react';
 import { Animated, StyleSheet, View } from 'react-native';
 
 import { StateContext } from '../state';
-import Button from './Button';
+import Text from './Text';
 
 const styles = StyleSheet.create({
-  sidebar: {
-    width: 200,
-    height: '100%', 
-    backgroundColor: "blue",
-  },
-  button: {
-    padding: 10
+  home: {
+    backgroundColor: "white",
+    height: '100%',
+    width: '100%',
+    position: 'fixed',
+    zIndex: 49,
+    top: 72
+    
   }
 });
 
 
-export class SlidingMenu extends React.Component {
+const Home = () => {
+  const homeAnim = useRef(new Animated.Value(0)).current; 
+  const { state } = useContext(StateContext);
 
-  render() {
-
-
-    const { state, toggleAnim } = this.props;
+  const moveMenu = () => {
 
     Animated.spring(
-      toggleAnim,
+      homeAnim,
       {
-        toValue: state ? 0 : -200,
+        toValue: state.open ? 600 : 0
       }
     ).start();
+  
+  };
 
-    return (
-      <Animated.View style={[styles.sidebar, {
-        transform: [{
-          translateX: toggleAnim
-        }]
-      }]}>
-        <View style={styles.button}>
-          <Button color='error' onPress={() => console.log('Button pressed')} >Button1</Button>
-        </View>
-        <View style={styles.button}>
-          <Button color='error' onPress={() => console.log('Button pressed')} >Button2</Button>
-        </View>
-      </Animated.View>
+  useEffect(() => {
+    moveMenu();
+  });
 
-    );
-  }
-}
-
-
-const Home = () => {
-  const { state } = useContext(StateContext);
-  const toggleAnim = useRef(new Animated.Value(0)).current;
 
 
   return (
     <>
-      {/* <SlidingMenu
-        state={state.open}
-        toggleAnim={toggleAnim}
-      /> */}
+      <Animated.View style={[styles.home, {
+        transform: [{
+          translateX: homeAnim
+        }]
+      }]}>
+        <View>
+          <Text>Testi</Text>
+        </View>
+      </Animated.View>
     </>
 
   );

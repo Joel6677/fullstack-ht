@@ -1,46 +1,64 @@
 import React, { useContext, useEffect, useRef } from 'react';
-import { Animated, StyleSheet, View } from 'react-native';
+import { Animated, StyleSheet, View, TouchableWithoutFeedback } from 'react-native';
 
 import { StateContext } from '../state';
 import Button from './Button';
-import Constants from 'expo-constants';
-
+import theme from '../theme';
 
 const styles = StyleSheet.create({ 
   sidebar: {
-    width: 200,
+    width: 600,
     height: '100%', 
-    backgroundColor: "blue",
-    zIndex: 1,
+    backgroundColor: theme.colors.primary,
     position: 'fixed',
-    top: 72
+    zIndex: 101
   },
   button: {
     padding: 10,
+  },
+  closeMenu: {
+    backgroundColor: 'grey',
+    width: '100%',
+    height: '100%',
+    position: 'fixed',
+    zIndex: 2
   }
 });
 
 
+
+
 const SideMenu = () => {
-  const toggleAnim = useRef(new Animated.Value(0)).current; 
-  const { state } = useContext(StateContext);
+  const toggleAnim = useRef(new Animated.Value(-600)).current; 
+  const fadeAnim = useRef(new Animated.Value(0)).current ;
+  const { state, dispatch } = useContext(StateContext);
 
   const moveMenu = () => {
 
-    Animated.spring(
+    Animated.timing(
       toggleAnim,
       {
-        toValue: state.open ? 0 : -200
+        toValue: state.open ? 0 : -600,
+        duration: 100
       }
     ).start();
   
   };
+  
+  const fade = () => {
+    Animated.timing(
+      fadeAnim,
+      {
+        toValue: state.open ? 0.25 : 0,
+        duration: 100,
+      }
+    ).start();
+  };
 
   useEffect(() => {
     moveMenu();
-  });
-
-
+    fade();
+  },[state.open]);
 
   return (
     <>
@@ -50,11 +68,17 @@ const SideMenu = () => {
         }]
       }]}>
         <View style={styles.button}>
-          <Button color='error' onPress={() => moveMenu()} >Button1</Button>
+          <Button color="primary" onPress={() => moveMenu()} >Button1</Button>
         </View>
       </Animated.View>
+      <Animated.View
+        style={[styles.closeMenu, {opacity: fadeAnim, zIndex: state.open ? 100 : 0} ]}
+      >
+          {state.open &&
+          <Button color='invisible' style={{height: "100%"}} onPress={() => dispatch({type: "SET_OPEN", payload: !state.open})} ></Button> }
+     
+      </Animated.View>
     </>
-
   );
 };
 

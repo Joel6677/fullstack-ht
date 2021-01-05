@@ -8,6 +8,7 @@ import SignIn from './SignIn';
 import SignUp from './SignUp';
 import SideMenu from './SideMenu';
 import theme from '../theme';
+import BottomBar from './BottomBar';
 
 
 const styles = StyleSheet.create({
@@ -23,6 +24,7 @@ const Main = () => {
     <View style={styles.container}>
       <AppBar />
       <SideMenu/>
+      {/* <BottomBar/> */}
       <Switch>
         <Route path="/" exact>
           <Home/>

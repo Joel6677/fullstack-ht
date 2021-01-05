@@ -1,16 +1,18 @@
-import React, { useContext } from 'react';
+import React, { useContext, useRef, useEffect } from 'react';
 
 import {
   View,
   ScrollView,
   StyleSheet,
-  TouchableWithoutFeedback
+  TouchableWithoutFeedback,
+  Animated,
 } from 'react-native';
 
 import Constants from 'expo-constants';
 import { Link } from 'react-router-native';
 import { useApolloClient } from '@apollo/react-hooks';
 import { useHistory } from 'react-router-native';
+import useResizeAware from 'react-resize-aware';
 
 import theme from '../theme';
 import Text from './Text';
@@ -20,13 +22,19 @@ import useAuthorizedUser from '../hooks/useAuthorizedUser';
 import { StateContext } from '../state';
 import { IconButton } from 'react-native-paper';
 
+import { Appbar } from 'react-native-paper';
+
 const styles = StyleSheet.create({
+  appbar: {
+    backgroundColor: theme.colors.primary,
+    
+  },
   container: {
     // paddingTop: Constants.statusBarHeight,
     backgroundColor: theme.colors.appBarBackground,
     width: '100%',
     position: 'fixed',
-    zIndex: 5
+    zIndex: 99
   },
   scrollView: {
     flexDirection: 'row',
@@ -62,10 +70,13 @@ const AppBar = () => {
   const apolloClient = useApolloClient();
   const authStorage = useContext(AuthStorageContext);
   const history = useHistory();
+  const [resizeListener, sizes] = useResizeAware();
+  const newWidth = `${((sizes.width - 200) / sizes.width) * 100}%`;
 
   const { authorizedUser } = useAuthorizedUser();
 
   const { state, dispatch } = useContext(StateContext);
+  const resizeAnim = useRef(new Animated.Value(0)).current; 
 
   const onSignOut = async () => {
     await authStorage.removeAccessToken();
@@ -73,11 +84,68 @@ const AppBar = () => {
     history.push('/');
   };
 
+  console.log(newWidth);
+
+  const moveAppbar = () => {
+
+    Animated.spring(
+      resizeAnim,
+      {
+        toValue: state.open ? 600 : 0
+      }
+    ).start();
+  
+  };
+
+  useEffect(() => {
+    moveAppbar();
+  });
+
+  console.log('sizes: ', sizes);
 
   return (
-    <View style={styles.container}>
-      <ScrollView style={styles.scrollView} horizontal> 
-      <IconButton icon="menu" color={theme.colors.primary} size={40} onPress={() => dispatch({type: "SET_OPEN", payload: !state.open})} 
+  //   <>
+
+  //   <View>
+  //     {resizeListener}
+  //   </View>
+  //   <Animated.View style={[styles.appbar, {
+  //     transform: [{
+  //       translateX: resizeAnim
+  //     }]
+  //   }]}>
+  //     <Appbar style={styles.appbar}>
+  //     <Appbar.Action
+  //       icon="menu"
+  //       onPress={() => dispatch({type: "SET_OPEN", payload: !state.open})}
+  //     />
+  //     <Appbar.Action icon="mail" onPress={() => console.log('Pressed mail')} />
+  //     <Appbar.Action icon="home" onPress={() => console.log('Pressed label')} />
+  //     <Appbar.Action
+  //       icon="magnify"
+  //       onPress={() => console.log('Pressed delete')}
+  //     />
+  //       <Appbar.Action
+  //       icon="account"
+  //       onPress={() => console.log('account')}
+  //     />
+  //   </Appbar>
+  //   </Animated.View>
+
+
+  //  </>
+    
+      // <View style={styles.container}>
+      // <View>
+
+        <Animated.View style={[styles.container, {
+          transform: [{
+            translateX: resizeAnim
+          }]
+        }]}>
+          {resizeListener}
+       <ScrollView style={styles.scrollView} horizontal> 
+       <IconButton icon="menu" color={theme.colors.primary} size={40} onPress={() => dispatch({type: "SET_OPEN", payload: !state.open})} 
         ></IconButton>
         {authorizedUser ? (
           <>
@@ -97,8 +165,8 @@ const AppBar = () => {
           </>
         )}
       </ScrollView>
-    </View>
-  );
+      </Animated.View>
+  ); 
 };
 
 export default AppBar;

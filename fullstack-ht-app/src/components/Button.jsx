@@ -18,14 +18,14 @@ const styles = StyleSheet.create({
     color: 'white',
   },
   colorPrimary: {
-    backgroundColor: theme.colors.primary,
+    backgroundColor: 'yellow',
   },
   colorError: {
     backgroundColor: theme.colors.error,
-  },
+  }
 });
 
-const Button = ({ children, style, color = 'primary', ...props }) => {
+const Button = ({ children, style, color = '', ...props }) => {
   const buttonStyle = [
     styles.container,
     style,
