@@ -1,8 +1,10 @@
 import React, { useContext, useRef, useEffect } from 'react';
-import { Animated, StyleSheet, View } from 'react-native';
+import { Animated, StyleSheet, View, Image } from 'react-native';
+import { useQuery } from '@apollo/client'; 
 
 import { StateContext } from '../state';
 import Text from './Text';
+import { FILES } from '../queries';
 
 const styles = StyleSheet.create({
   home: {
@@ -11,7 +13,7 @@ const styles = StyleSheet.create({
     width: '100%',
     position: 'fixed',
     zIndex: 49,
-    top: 72
+    top: 60
     
   }
 });
@@ -20,6 +22,7 @@ const styles = StyleSheet.create({
 const Home = () => {
   const homeAnim = useRef(new Animated.Value(0)).current; 
   const { state } = useContext(StateContext);
+  const files = useQuery(FILES);
 
   const moveMenu = () => {
 
@@ -46,7 +49,8 @@ const Home = () => {
         }]
       }]}>
         <View>
-          <Text>Testi</Text>
+          <Image></Image>
+          <Text>Homepage</Text>
         </View>
       </Animated.View>
     </>

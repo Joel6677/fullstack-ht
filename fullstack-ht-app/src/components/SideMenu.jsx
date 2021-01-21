@@ -1,5 +1,5 @@
 import React, { useContext, useEffect, useRef } from 'react';
-import { Animated, StyleSheet, View, TouchableWithoutFeedback } from 'react-native';
+import { Animated, StyleSheet, View, Text } from 'react-native';
 
 import { StateContext } from '../state';
 import Button from './Button';
@@ -39,7 +39,7 @@ const SideMenu = () => {
       toggleAnim,
       {
         toValue: state.open ? 0 : -600,
-        duration: 100
+        duration: 300
       }
     ).start();
   
@@ -50,7 +50,7 @@ const SideMenu = () => {
       fadeAnim,
       {
         toValue: state.open ? 0.25 : 0,
-        duration: 100,
+        duration: 300,
       }
     ).start();
   };
@@ -68,14 +68,16 @@ const SideMenu = () => {
         }]
       }]}>
         <View style={styles.button}>
-          <Button color="primary" onPress={() => moveMenu()} >Button1</Button>
+          <Text>User name</Text>
+          <Text> Create new program </Text>
+          <Text> Search for programs </Text>
         </View>
       </Animated.View>
       <Animated.View
         style={[styles.closeMenu, {opacity: fadeAnim, zIndex: state.open ? 100 : 0} ]}
       >
           {state.open &&
-          <Button color='invisible' style={{height: "100%"}} onPress={() => dispatch({type: "SET_OPEN", payload: !state.open})} ></Button> }
+          <Button style={{height: "100%"}} onPress={() => dispatch({type: "SET_OPEN", payload: !state.open})} ></Button> }
      
       </Animated.View>
     </>

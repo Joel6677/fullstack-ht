@@ -9,6 +9,7 @@ import SignUp from './SignUp';
 import SideMenu from './SideMenu';
 import theme from '../theme';
 import BottomBar from './BottomBar';
+import Userpage from './Userpage';
 
 
 const styles = StyleSheet.create({
@@ -34,6 +35,9 @@ const Main = () => {
         </Route>
         <Route path="/sign-up" exact>
           <SignUp />
+        </Route>
+        <Route path="/userpage" exact>
+          <Userpage />
         </Route>
         <Redirect to="/" />
       </Switch>

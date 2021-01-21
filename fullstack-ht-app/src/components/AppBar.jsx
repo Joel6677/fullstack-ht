@@ -27,6 +27,7 @@ import { Appbar } from 'react-native-paper';
 const styles = StyleSheet.create({
   appbar: {
     backgroundColor: theme.colors.primary,
+    zIndex: 99
     
   },
   container: {
@@ -84,7 +85,7 @@ const AppBar = () => {
     history.push('/');
   };
 
-  console.log(newWidth);
+  
 
   const moveAppbar = () => {
 
@@ -101,7 +102,6 @@ const AppBar = () => {
     moveAppbar();
   });
 
-  console.log('sizes: ', sizes);
 
   return (
   //   <>
@@ -114,22 +114,22 @@ const AppBar = () => {
   //       translateX: resizeAnim
   //     }]
   //   }]}>
-  //     <Appbar style={styles.appbar}>
-  //     <Appbar.Action
-  //       icon="menu"
-  //       onPress={() => dispatch({type: "SET_OPEN", payload: !state.open})}
-  //     />
-  //     <Appbar.Action icon="mail" onPress={() => console.log('Pressed mail')} />
-  //     <Appbar.Action icon="home" onPress={() => console.log('Pressed label')} />
-  //     <Appbar.Action
-  //       icon="magnify"
-  //       onPress={() => console.log('Pressed delete')}
-  //     />
-  //       <Appbar.Action
-  //       icon="account"
-  //       onPress={() => console.log('account')}
-  //     />
-  //   </Appbar>
+      <Appbar style={styles.appbar}>
+      <Appbar.Action
+        icon="menu"
+        onPress={() => dispatch({type: "SET_OPEN", payload: !state.open})}
+      />
+      <Appbar.Action icon="mail" onPress={() => history.push("sign-up")} />
+      <Appbar.Action icon="home" onPress={() => history.push("/")} />
+      <Appbar.Action
+        icon="magnify"
+        onPress={() => console.log('Pressed delete')}
+      />
+        <Appbar.Action
+        icon="account"
+        onPress={() => history.push("/userpage")}
+      />
+    </Appbar>
   //   </Animated.View>
 
 
@@ -138,34 +138,34 @@ const AppBar = () => {
       // <View style={styles.container}>
       // <View>
 
-        <Animated.View style={[styles.container, {
-          transform: [{
-            translateX: resizeAnim
-          }]
-        }]}>
-          {resizeListener}
-       <ScrollView style={styles.scrollView} horizontal> 
-       <IconButton icon="menu" color={theme.colors.primary} size={40} onPress={() => dispatch({type: "SET_OPEN", payload: !state.open})} 
-        ></IconButton>
-        {authorizedUser ? (
-          <>
-            <AppBarTab onPress={onSignOut}>Sign out</AppBarTab>
-          </>
-        ) : (
-          <>
-            <Link to="/sign-in" component={AppBarTab}>
-              Sign in
-            </Link>
-            <Link to="/sign-up" component={AppBarTab}>
-              Sign up
-            </Link>
-            <Link to="/" component={AppBarTab}>
-              Home
-            </Link>
-          </>
-        )}
-      </ScrollView>
-      </Animated.View>
+      //   <Animated.View style={[styles.container, {
+      //     transform: [{
+      //       translateX: resizeAnim
+      //     }]
+      //   }]}>
+      //     {resizeListener}
+      //  <ScrollView style={styles.scrollView} horizontal> 
+      //  <IconButton icon="menu" color={theme.colors.primary} size={40} onPress={() => dispatch({type: "SET_OPEN", payload: !state.open})} 
+      //   ></IconButton>
+      //   {authorizedUser ? (
+      //     <>
+      //       <AppBarTab onPress={onSignOut}>Sign out</AppBarTab>
+      //     </>
+      //   ) : (
+      //     <>
+      //       <Link to="/sign-in" component={AppBarTab}>
+      //         Sign in
+      //       </Link>
+      //       <Link to="/sign-up" component={AppBarTab}>
+      //         Sign up
+      //       </Link>
+      //       <Link to="/" component={AppBarTab}>
+      //         Home
+      //       </Link>
+      //     </>
+      //   )}
+      // </ScrollView>
+      // </Animated.View>
   ); 
 };
 
