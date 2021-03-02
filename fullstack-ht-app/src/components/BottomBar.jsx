@@ -5,10 +5,8 @@ import theme from '../theme';
 
 const styles = StyleSheet.create({ 
     bottombar: {
-      backgroundColor: theme.colors.primary
-    }, 
-    z: {
-      zIndex: 50
+      backgroundColor: theme.colors.primary,
+      zIndex: 20
     }
   });
 
@@ -34,11 +32,11 @@ const BottomBar = () => {
 
   return (
     <BottomNavigation
-      style= {styles.z}
+      style={styles.bottombar}
       navigationState={{ index, routes }}
       onIndexChange={setIndex}
       renderScene={renderScene}
-      barStyle={styles.bottombar}
+      barStyle={{ backgroundColor: '#694fad' }}
     />
   );
 };
