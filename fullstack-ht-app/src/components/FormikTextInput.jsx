@@ -24,6 +24,7 @@ const FormikTextInput = ({ name, ...props }) => {
         onBlur={() => helpers.setTouched(true)}
         value={field.value}
         error={showError}
+        placeholderTextColor={'#A6ACAF'}
         {...props}
       />
       {showError && <Text style={styles.errorText}>{meta.error}</Text>}

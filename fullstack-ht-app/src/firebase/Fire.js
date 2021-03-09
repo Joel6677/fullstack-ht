@@ -1,10 +1,11 @@
 import React from 'react';
-import firebase from "firebase/app";
+import firebase from "firebase";
 
 
 export const firebaseConfig = {
     apiKey: "AIzaSyDkW-jIpPtfIi7gvbaTyWVw3GKWZR2GF00",
     authDomain: "fullstack-project-31017.firebaseapp.com",
+    databaseURL: "https://fullstack-project-31017-default-rtdb.firebaseio.com",
     projectId: "fullstack-project-31017",
     storageBucket: "gs://fullstack-project-31017.appspot.com",
     messagingSenderId: "487934128883",

@@ -12,7 +12,7 @@ const styles = StyleSheet.create({
     fontSize: theme.fontSizes.body,
     fontFamily: theme.fonts.main,
     color: theme.colors.textPrimary,
-    borderRadius: theme.roundness,
+    borderRadius: 5,
     borderColor: '#aab2bb',
   },
   error: {

@@ -15,6 +15,7 @@ const apolloClient = createApolloClient(authStorage);
 const firebaseConfig = {
   apiKey: "AIzaSyDkW-jIpPtfIi7gvbaTyWVw3GKWZR2GF00",
   authDomain: "fullstack-project-31017.firebaseapp.com",
+  databaseURL: "https://fullstack-project-31017-default-rtdb.firebaseio.com",
   projectId: "fullstack-project-31017",
   storageBucket: "gs://fullstack-project-31017.appspot.com",
   messagingSenderId: "487934128883",

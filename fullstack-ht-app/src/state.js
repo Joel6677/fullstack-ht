@@ -4,6 +4,8 @@ export const reducer = (state, action) => {
     switch (action.type) {
         case "SET_OPEN":
             return { ...state, open: action.payload }; 
+        case "SET_SHOW":
+            return { ...state, show: action.payload};
         default:
             return { ...state };
     }
@@ -11,7 +13,8 @@ export const reducer = (state, action) => {
 
 
 const initialState = {
-    open: false
+    open: false,
+    show: false
 };
 
 export const StateContext = createContext(initialState);

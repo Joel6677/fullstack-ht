@@ -1,22 +1,31 @@
 import React from 'react';
-import { StyleSheet, View } from 'react-native';
+import { StyleSheet, View, Alert } from 'react-native';
 import { Formik } from 'formik';
 import * as yup from 'yup';
 import { useHistory } from 'react-router-native';
-import { SignUpWithEmail } from '../firebase/firebaseFunctions';
 
-import CustomButton from './CustomButton';
+import { Button} from 'react-native-paper';
+import { SignUpWithEmail} from '../firebase/firebaseFunctions';
+import Text from './Text';
 import FormikTextInput from './FormikTextInput';
 
 
 const styles = StyleSheet.create({
   container: {
-    backgroundColor: 'white',
-    padding: 15,
+    flexDirection: 'column',
+    justifyContent: 'center',
+    height: '100%',
+    width: '100%',
+    position: 'absolute',
+    zIndex: 1
   },
   fieldContainer: {
-    marginBottom: 15,
+    margin: 15,
   },
+  heading: {
+    alignItems: 'center',
+    marginBottom: 30
+  }
 });
 
 const initialValues = {
@@ -26,11 +35,6 @@ const initialValues = {
 };
 
 const validationSchema = yup.object().shape({
-  // username: yup
-  //   .string()
-  //   .min(1, 'Username must be at least 1 character long')
-  //   .max(30, 'Username must be at most 30 characters long')
-  //   .required('Username is required'),
   email: yup
     .string()
     .required('Email is required'),
@@ -50,14 +54,7 @@ const validationSchema = yup.object().shape({
 
 const SignUpForm = ({ onSubmit }) => {
   return (
-    <View style={styles.container}>
-
-      {/* 
-      <View style={styles.fieldContainer}>
-        <FormikTextInput name="username" placeholder="Username" />
-      </View> */}
-
-
+    <View>
       <View style={styles.fieldContainer}>
         <FormikTextInput 
         name="email" 
@@ -80,12 +77,13 @@ const SignUpForm = ({ onSubmit }) => {
         />
       </View>
 
-      <CustomButton onPress={onSubmit} testID="submitButton">
-        Sign up
-      </CustomButton>
+      <Button style={styles.fieldContainer} mode='contained' onPress={onSubmit}>
+          Sign up
+      </Button>
     </View>
   );
 };
+
 
 const SignUp = () => {
   const history = useHistory();
@@ -93,20 +91,33 @@ const SignUp = () => {
   const onSubmit = async (values) => {
     const { email, password } = values;
 
-    SignUpWithEmail(email, password);
-
-    history.push('/upload-userinfo');
+    if (await SignUpWithEmail(email, password)) {
+      emailVerificationLink();
+      history.push('/choose-pic'); 
+    }
+     
+    
   };
 
   return (
+    <View style={styles.container}>
 
-    <Formik
-      initialValues={initialValues}
-      onSubmit={onSubmit}
-      validationSchema={validationSchema}
-    >
-      {({ handleSubmit }) => <SignUpForm onSubmit={handleSubmit} />}
-    </Formik>
+      <View style={styles.heading}>
+        <Text color={'primary'} fontSize={'heading'} fontWeight={'bold'}>
+          Sign up with email
+        </Text>
+      </View>
+
+
+
+      <Formik
+        initialValues={initialValues}
+        onSubmit={onSubmit}
+        validationSchema={validationSchema}
+      >
+        {({ handleSubmit }) => <SignUpForm onSubmit={handleSubmit} />}
+      </Formik>
+    </View>
   );
 };
 

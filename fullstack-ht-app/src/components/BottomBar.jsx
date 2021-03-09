@@ -1,44 +1,50 @@
-import React, { useState }  from 'react';
-import { BottomNavigation, Text } from 'react-native-paper';
-import { StyleSheet } from 'react-native';
+import React, { useContext } from 'react';
+
+import {
+  StyleSheet, View
+} from 'react-native';
+
+import Constants from 'expo-constants';
+import { useHistory } from 'react-router-native';
 import theme from '../theme';
+import { StateContext } from '../state';
+import { Appbar } from 'react-native-paper';
+import {SignOut} from '../firebase/firebaseFunctions';
 
-const styles = StyleSheet.create({ 
-    bottombar: {
-      backgroundColor: theme.colors.primary,
-      zIndex: 20
-    }
-  });
+const styles = StyleSheet.create({
+  container: {
+    backgroundColor: theme.colors.primary,
+    zIndex: 2,
+    position: 'absolute',
+    width: '100%',
+    bottom: 0
+  },
+  appbar: {
+    alignItems: 'center',
+    justifyContent: 'space-around', 
+  }
+});
 
-const MusicRoute = () => <Text>Music</Text>;
-
-const AlbumsRoute = () => <Text>Albums</Text>;
-
-const RecentsRoute = () => <Text>Recents</Text>;
 
 const BottomBar = () => {
-  const [index, setIndex] = useState(0);
-  const [routes] = useState([
-    { key: 'music', title: 'Music', icon: 'music' },
-    { key: 'albums', title: 'Albums', icon: 'album' },
-    { key: 'recents', title: 'Recents', icon: 'history'},
-  ]);
+  const history = useHistory();
 
-  const renderScene = BottomNavigation.SceneMap({
-    music: MusicRoute,
-    albums: AlbumsRoute,
-    recents: RecentsRoute,
-  });
 
   return (
-    <BottomNavigation
-      style={styles.bottombar}
-      navigationState={{ index, routes }}
-      onIndexChange={setIndex}
-      renderScene={renderScene}
-      barStyle={{ backgroundColor: '#694fad' }}
-    />
-  );
+
+    <View style={styles.container}>
+      <Appbar.Header color={theme.colors.primary} style={styles.appbar} statusBarHeight={0}>
+        <Appbar.Action icon="home" onPress={() => history.push("/")} />
+        <Appbar.Action icon="magnify" onPress={() => history.push("/")} />
+        <Appbar.Action icon="camera" onPress={() => history.push("/")} />
+        <Appbar.Action
+          icon="email"
+          onPress={() => history.push('/choose-pic')}
+        />
+      </Appbar.Header>
+    </View>
+
+  ); 
 };
 
 export default BottomBar;

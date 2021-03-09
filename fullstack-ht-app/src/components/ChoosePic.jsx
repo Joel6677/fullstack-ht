@@ -1,19 +1,46 @@
-import React, { useState, useEffect } from 'react';
-import { View, Image, Button, Platform, Alert } from 'react-native';
+import React, { useState } from 'react';
+import { View, Image, StyleSheet } from 'react-native';
+import {Button} from 'react-native-paper';
 import uuid from 'uuid';
 import * as ImagePicker from 'expo-image-picker';
 import firebase from "firebase/app";
-import "firebase/firestore";
-import "firebase/firebase-storage";
-import "firebase/firebase-auth";
+import "firebase/auth";
+// import "firebase/firestore";
+// import "firebase/firebase-storage";
+// import "firebase/firebase-auth";
+import Text from './Text';
+import { useHistory } from 'react-router-native';
+
+const styles = StyleSheet.create({
+  container: {
+    // top: 30,
+    flexDirection: 'column',
+    alignItems: 'center',
+    justifyContent: 'center',
+    height: '100%',
+    width: '100%',
+    position: 'absolute',
+    zIndex: 1
+  },
+  button: {
+    marginBottom: 30
+  },
+  nextButton: {
+    marginRight: 20,
+    marginTop: 100,
+    alignSelf: 'flex-end'
+  },
+  heading: {
+    paddingBottom: 50,
+  }
+});
+
+
 
 const ChoosePic = () => {
 
-  useEffect(() => {
-    console.log('test');
-  });
-
-  const [image, setImage] = useState(null);
+  const [image, setImage] = useState();
+  const history = useHistory();
 
   const pickProfilePicFromLibrary = async () => {
     let result = await ImagePicker.launchImageLibraryAsync({
@@ -22,8 +49,6 @@ const ChoosePic = () => {
       aspect: [4, 3],
       quality: 1,
     });
-
-    console.log('result: ', result);
 
     if (!result.cancelled) {
       uploadImage(result.uri);
@@ -39,8 +64,6 @@ const ChoosePic = () => {
       quality: 1,
     });
 
-    console.log('result: ', result);
-
     if (!result.cancelled) {
       uploadImage(result.uri);
       setImage(result.uri);
@@ -48,28 +71,25 @@ const ChoosePic = () => {
   };
 
   const addImageToFirestore = async (downloadURL) => {
+    firebase.auth().currentUser ? 
     firebase.firestore()
     .collection('images')
-    .doc(firebase.auth.currentUser.uid)
+    .doc(firebase.auth().currentUser.uid)
     .collection('userImages')
     .add({
       downloadURL
-    });
+    }) : () => console.log('not signed in');
 };
 
 
   const uploadImage = async(uri) => {
-    console.log('uri: ', uri);
+
     const response = await fetch(uri);
     const blob = await response.blob();
 
     const ref = firebase.storage().ref().child(`images/${firebase.auth().currentUser.uid}/${uuid.v4()}`);
 
-    console.log('blob: ', blob);
-
     const uploadTask = ref.put(blob);
-
-    console.log('uploadTask: ', uploadTask);
 
     uploadTask.on('state_changed', 
   (snapshot) => {
@@ -118,11 +138,12 @@ const ChoosePic = () => {
 
   return (
 
-    <View style={{ flex: 1, alignItems: 'center', justifyContent: 'center' }}>
-    <Button title="Pick an image from camera roll" onPress={pickProfilePicFromLibrary} />
-    <Button title='Take a picture' onPress={takeProfilePic} />
-    {image && <Image source={{ uri: image }} style={{ width: 200, height: 200 }} />}
-    {/* <Image source={{ url : imageUrl }} style={{ width: 200, height: 200 }} /> */}
+    <View style={styles.container}>
+    <Text style={styles.heading} color={'primary'} fontSize={'heading'} fontWeight={'bold'}>Choose profile picture</Text>
+    <Button icon='folder-image' mode='contained' style={styles.button} onPress={pickProfilePicFromLibrary}>Pick an image</Button>
+    <Button icon='camera' mode='contained' style={styles.button} onPress={takeProfilePic} >Take a picture</Button>
+    {image && <Image source={{ uri: image }} style={{ width: 100, height: 100 }} />}
+    <Button compact={true} icon='arrow-right-bold-box' mode='contained' style={styles.nextButton} onPress={()=>(history.push('/upload-userinfo'))}>Next</Button>
   </View>
 
   );

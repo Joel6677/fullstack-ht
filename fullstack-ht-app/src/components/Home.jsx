@@ -1,56 +1,93 @@
 import React, { useContext, useRef, useEffect, useState } from 'react';
-import { Animated, StyleSheet, View, Image } from 'react-native';
+import { Animated, StyleSheet, View, Image, ScrollView, SafeAreaView, Platform, Button } from 'react-native';
 import { useQuery } from '@apollo/client'; 
-
 import { StateContext } from '../state';
 import Text from './Text';
-import fileService from '../services/files';
+
+// import fileService from '../services/files';
 
 const styles = StyleSheet.create({
-  home: {
-    height: '100%',
+  container: {
+    flex: 1,
+    flexDirection: 'row',
+    alignItems: "center",
+    justifyContent: "center",
     width: '100%',
+    height: '100%',
     position: 'absolute',
-    zIndex: 1,
   },
-  photo: {
-    width: 50,
-    height: 50,
+  scrollContainer: {
+    flex: 1,
+    flexDirection: 'row',
+    position: 'absolute',
+    backgroundColor: 'green',
+    height: 100,
+    width: 50
   },
+  scrollViewStyle: {
+
+  },
+  textContainer: {
+    position: 'absolute',
+    backgroundColor: 'purple',
+    alignSelf: 'flex-end'
+
+
+  }
+
+
+  // photo: {
+  //   width: 50,
+  //   height: 50,
+  // },
 });
 
 
+
 const Home = () => {
-  const homeAnim = useRef(new Animated.Value(0)).current; 
-  const { state } = useContext(StateContext);
-  const [files, setFiles] = useState([]);
 
-  const moveMenu = () => {
 
-    Animated.spring(
-      homeAnim,
-      {
-        toValue: state.open ? 600 : 0
-      }
-    ).start();
+  // const scrollY = useRef(new Animated.Value(0)).current; 
+
+ 
+
+  // create dates
+
+  // const { state } = useContext(StateContext);
+  // const [files, setFiles] = useState([]);
+
+  // const moveMenu = () => {
+
+  //   Animated.spring(
+  //     homeAnim,
+  //     {
+  //       toValue: state.open ? 600 : 0
+  //     }
+  //   ).start();
   
-  };
+  // };
 
-  useEffect(() => {
-    moveMenu();
-    fileService.getAll().then(files =>
-      setFiles(files));
-  },[]);
+  // useEffect(() => {
+  //   moveMenu();
+  //   fileService.getAll().then(files =>
+  //     setFiles(files));
+  // },[]);
 
-  const getImage = async (filename) => {
-    return await fileService.getImage(filename);
-  };
+  // const getImage = async (filename) => {
+  //   return await fileService.getImage(filename);
+  // };
 
   // get images here
 
   return (
      <>
-      <Animated.View style={[styles.home, {
+      <View style={styles.container}>
+      
+      </View>
+     
+
+
+      {/* <Animated.View style={[styles.home, {
         transform: [{
           translateX: homeAnim
         }]
@@ -67,7 +104,7 @@ const Home = () => {
           )}
           <Text>Pictures&videos</Text>
         </View>
-      </Animated.View> 
+      </Animated.View>  */}
       
      </>
 

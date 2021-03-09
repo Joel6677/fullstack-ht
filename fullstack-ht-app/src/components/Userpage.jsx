@@ -6,11 +6,16 @@ import Text from './Text';
 
 const styles = StyleSheet.create({
   container: {
-    backgroundColor: "white",
+    flexDirection: 'column',
+    justifyContent: 'center',
+    flexWrap: 'wrap',
+    alignContent: 'center',
     height: '100%',
     width: '100%',
-    zIndex: 49,
-  }
+    position: 'absolute',
+    flex: 1,
+    zIndex: 1
+  },
 });
 
 

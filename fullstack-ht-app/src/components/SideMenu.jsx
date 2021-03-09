@@ -1,7 +1,7 @@
 import React, { useContext, useEffect, useRef } from 'react';
-import { Animated, StyleSheet, View, Text, Dimensions } from 'react-native';
+import { Animated, StyleSheet, View, Dimensions } from 'react-native';
 import { Button, Avatar, Divider } from 'react-native-paper';
-// import useResizeAware from 'react-resize-aware';
+import { useHistory } from 'react-router-native';
 
 import { StateContext } from '../state';
 import CustomButton from './CustomButton';
@@ -30,7 +30,7 @@ const styles = StyleSheet.create({
   },
   avatar: {
     marginLeft: 30,
-    marginTop: 50
+    marginBottom: 20
   },
   divider: {
     zIndex: 5,
@@ -41,11 +41,15 @@ const styles = StyleSheet.create({
 
 const SideMenu = () => {
 
-  // const [resizeListener, sizes] = useResizeAware();
-
   const toggleAnim = useRef(new Animated.Value(Dimensions.get('window').width*-0.85)).current; 
   const fadeAnim = useRef(new Animated.Value(0)).current ;
   const { state, dispatch } = useContext(StateContext);
+  const history = useHistory();
+
+  const route = (route) => {
+      history.push(route);
+      dispatch({type: "SET_OPEN", payload: !state.open});
+  };
 
 
   const moveMenu = () => {
@@ -79,7 +83,6 @@ const SideMenu = () => {
 
   return (
     <>
-      {/* {resizeListener} */}
       <Animated.View style={[styles.sidebar, {
         transform: [{
           translateX: toggleAnim
@@ -91,7 +94,7 @@ const SideMenu = () => {
 
           <Divider style={styles.divider}/>
 
-          <Button color='white' icon='account' style={styles.button} onPress={() => {console.log('Profile pressed');}}>
+          <Button color='white' icon='account' style={styles.button} onPress={() => {route('/sign-up');}}>
             Profile
           </Button>
           <Button color='white' icon='star-box' style={styles.button} onPress={() => {console.log('Reviews pressed');}}>

@@ -29,8 +29,8 @@ const styles = StyleSheet.create({
 const Main = () => {
   return (
     <View style={styles.container}>
-      {/* <SideMenu/> */}
-      {/* <AppBar/> */}
+      <SideMenu/>
+      <AppBar/>    
       <BottomBar/>
       <Switch>
         <Route path="/" exact>
