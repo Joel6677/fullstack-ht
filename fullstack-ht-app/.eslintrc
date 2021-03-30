@@ -1,5 +1,5 @@
 {
-    "plugins": ["react"],
+    "plugins": ["react", "react-hooks"],
     "settings": {
       "react": {
         "version": "detect"
@@ -12,6 +12,8 @@
     },
     "rules": {
       "react/prop-types": "off",
-      "semi": "error"
+      "semi": "error",
+      "react-hooks/rules-of-hooks": "error", // Checks rules of Hooks
+      "react-hooks/exhaustive-deps": "warn" // Checks effect dependencies
     }
   }

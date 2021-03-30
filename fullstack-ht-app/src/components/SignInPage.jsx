@@ -1,7 +1,7 @@
 import React, { useContext, useRef, useEffect } from 'react';
 import { StyleSheet, View } from 'react-native';
 import { useHistory } from 'react-router-native';
-import { SignInWithGoogle, SignInWithFacebook } from '../firebase/firebaseFunctions';
+import { SignInWithGoogle, SignInWithFacebook } from '../firebase/auth';
 import SignUpPhone from './SignUpPhone';
 import CustomButton from './CustomButton';
 import Text from './Text';

@@ -1,19 +1,17 @@
 import React, { useState } from 'react';
 import { View, Image, StyleSheet } from 'react-native';
-import {Button} from 'react-native-paper';
+import {Button, Snackbar, IconButton} from 'react-native-paper';
 import uuid from 'uuid';
 import * as ImagePicker from 'expo-image-picker';
 import firebase from "firebase/app";
-import "firebase/auth";
-// import "firebase/firestore";
-// import "firebase/firebase-storage";
-// import "firebase/firebase-auth";
+import "firebase/firestore";
+import "firebase/firebase-storage";
+import "firebase/firebase-auth";
 import Text from './Text';
 import { useHistory } from 'react-router-native';
 
 const styles = StyleSheet.create({
   container: {
-    // top: 30,
     flexDirection: 'column',
     alignItems: 'center',
     justifyContent: 'center',
@@ -32,6 +30,17 @@ const styles = StyleSheet.create({
   },
   heading: {
     paddingBottom: 50,
+  },
+  iconButton: {
+    position: 'absolute',
+    width: 200,
+    height: 200,
+    paddingLeft: 100,
+    marginLeft: 150,
+    zIndex: 2
+  },
+  snackbar: {
+    marginBottom: 100
   }
 });
 
@@ -41,6 +50,10 @@ const ChoosePic = () => {
 
   const [image, setImage] = useState();
   const history = useHistory();
+
+  const [visible, setVisible] = useState(false);
+  const onToggleSnackBar = () => setVisible(!visible);
+  const onDismissSnackBar = () => setVisible(false);
 
   const pickProfilePicFromLibrary = async () => {
     let result = await ImagePicker.launchImageLibraryAsync({
@@ -53,6 +66,7 @@ const ChoosePic = () => {
     if (!result.cancelled) {
       uploadImage(result.uri);
       setImage(result.uri);
+      onToggleSnackBar();
     }
   };
 
@@ -67,6 +81,7 @@ const ChoosePic = () => {
     if (!result.cancelled) {
       uploadImage(result.uri);
       setImage(result.uri);
+      onToggleSnackBar();
     }
   };
 
@@ -76,7 +91,8 @@ const ChoosePic = () => {
     .collection('images')
     .doc(firebase.auth().currentUser.uid)
     .collection('userImages')
-    .add({
+    .doc('profilePicture')
+    .set({
       downloadURL
     }) : () => console.log('not signed in');
 };
@@ -144,6 +160,20 @@ const ChoosePic = () => {
     <Button icon='camera' mode='contained' style={styles.button} onPress={takeProfilePic} >Take a picture</Button>
     {image && <Image source={{ uri: image }} style={{ width: 100, height: 100 }} />}
     <Button compact={true} icon='arrow-right-bold-box' mode='contained' style={styles.nextButton} onPress={()=>(history.push('/upload-userinfo'))}>Next</Button>
+    <Snackbar
+        style={styles.snackbar}
+        visible={visible}
+        onDismiss={onDismissSnackBar}
+        action={{
+          label: 'Undo',
+          onPress: () => {
+            console.log('pressed');
+          },
+        }}>
+        Image uploaded.
+      </Snackbar>
+      {image && <IconButton
+        icon={'check-circle-outline'} size={50} style={styles.iconButton} color='#b157e6'/>}
   </View>
 
   );

@@ -1,6 +1,6 @@
-import React, { useContext, useEffect, useRef } from 'react';
+import React, { useContext, useEffect, useRef, useState } from 'react';
 import { Animated, StyleSheet, View, Dimensions } from 'react-native';
-import { Button, Avatar, Divider } from 'react-native-paper';
+import { Button, Avatar, Divider, Drawer } from 'react-native-paper';
 import { useHistory } from 'react-router-native';
 
 import { StateContext } from '../state';
@@ -47,6 +47,7 @@ const SideMenu = () => {
   const history = useHistory();
 
   const route = (route) => {
+      console.log('route: ', route);
       history.push(route);
       dispatch({type: "SET_OPEN", payload: !state.open});
   };
@@ -81,6 +82,8 @@ const SideMenu = () => {
     fade();
   },[state.open]);
 
+  const [active, setActive] = useState('');
+
   return (
     <>
       <Animated.View style={[styles.sidebar, {
@@ -90,9 +93,26 @@ const SideMenu = () => {
       }]}>
         <View style={styles.sidemenuButtons}>
 
-          <Avatar.Image style={styles.avatar} size={70} />
+          <Avatar.Image style={styles.avatar} size={80} />
 
           <Divider style={styles.divider}/>
+
+          <Drawer.Section title="Some title">
+            <Drawer.Item
+              label="Upload new whisky"
+              active={active === 'first'}
+              onPress={() => route('/upload-whisky')}
+            />
+            <Drawer.Item
+              label="Second Item"
+              active={active === 'second'}
+              onPress={() => setActive('second')}
+            />
+          </Drawer.Section>
+
+          <Button color='white' icon='account' style={styles.button} onPress={() => {route('/upload-whisky');}}>
+            Profile
+          </Button>
 
           <Button color='white' icon='account' style={styles.button} onPress={() => {route('/sign-up');}}>
             Profile

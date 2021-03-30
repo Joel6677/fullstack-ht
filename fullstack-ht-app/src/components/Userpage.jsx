@@ -1,36 +1,101 @@
-import React, { useContext, useRef, useEffect } from 'react';
-import { Animated, StyleSheet, View } from 'react-native';
+import React, { useState, useEffect } from 'react';
+import { StyleSheet, View, Image, ActivityIndicator, } from 'react-native';
+import { Button, Avatar, Divider } from 'react-native-paper';
+import { useHistory } from 'react-router-native';
+import {GET_IMAGE} from '../firebase/queries';
 
 import { StateContext } from '../state';
 import Text from './Text';
 
+import firebase from "firebase/app";
+import "firebase/auth";
+import "firebase/firestore";
+
+import theme from '../theme';
+
 const styles = StyleSheet.create({
-  container: {
+  topContainer: {
     flexDirection: 'column',
     justifyContent: 'center',
-    flexWrap: 'wrap',
-    alignContent: 'center',
+    alignItems: 'center',
     height: '100%',
     width: '100%',
     position: 'absolute',
-    flex: 1,
     zIndex: 1
+  },
+  container: {
+    flexDirection: 'row',
+    alignItems: 'center',
+  }, 
+  bottomContainer: {
+    
+  },
+  avatar: {
+    marginBottom: 40,
+    width: 150, 
+    height: 150,
+    borderRadius: 100
+  },
+  loading: {
+    position: 'absolute',
+    top: 245,
+    zIndex: 2
+  },
+  button: {
+    marginHorizontal: 50
+  },
+  button2: {
+    marginTop: 20
   },
 });
 
 
 const Userpage = () => {
 
+  const history = useHistory();
+  const [img, setImg] = useState();
+  const [loaded, setLoaded] = useState(false);
+
+
+  useEffect(() => {
+    firebase.firestore()
+    .collection("images")
+    .doc(firebase.auth().currentUser.uid)
+    .collection("userImages")
+    .doc("profilePicture")
+    .get().then((snapshot) => {
+      setImg(snapshot.data().downloadURL);
+    });
+  
+  });
+
+  const linkTo = (link) => {
+    history.push(link);
+  };
 
   return (
-    <>
-       <View style={styles.container}>
-           <Text>Profile picture</Text>
-           <Text>Bio</Text>
-           <Text>Pictures & videos</Text>
-           <Text>Interests</Text>
-       </View>
-    </>
+
+      <View style={styles.topContainer}>
+      <View style={styles.loading}>
+        <ActivityIndicator size='large' animating={!loaded} color={theme.colors.primary} />
+      </View>
+      <Image source={{ uri: img }} style={styles.avatar} onLoadEnd={() => setLoaded(true)} defaultSource={''}/>
+      <View style={styles.container}>
+        <Button icon="settings-outline" mode="outlined" compact="true" style={styles.button} onPress={() => linkTo('my-reviews')}>
+         My reviews
+          </Button>
+
+        <Button icon="lead-pencil" mode="outlined" compact="true" style={styles.button} onPress={() => linkTo('my-info')}>
+          My info
+          </Button>
+
+      </View>
+      <View style={styles.bottomContainer}>
+        <Button icon="camera" mode="outlined" compact="true" style={styles.button2} onPress={() => linkTo('/upload-media')}>
+          Upload media
+        </Button>
+      </View>
+      </View>
 
   );
 };

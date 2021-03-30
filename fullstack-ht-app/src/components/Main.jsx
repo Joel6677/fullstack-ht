@@ -2,19 +2,25 @@ import React from 'react';
 import { StyleSheet, View } from 'react-native';
 import { Route, Switch, Redirect } from 'react-router-native';
 
-import Home from './Home';
+// import Home from './Home';
 import AppBar from './AppBar';
 import SignUpPage from './SignUpPage';
 import SignUpEmail from './SignUpEmail';
-import SignInPage from './SignInPage';
+import SignInEmail from './SignInEmail';
 import SideMenu from './SideMenu';
 import theme from '../theme';
 import BottomBar from './BottomBar';
 import Userpage from './Userpage';
-import { SignInWithEmail } from '../firebase/firebaseFunctions';
 import SignUpPhone from './SignUpPhone';
 import UploadUserInfo from './UploadUserInfo';
 import ChoosePic from './ChoosePic';
+import UploadMedia from './UploadMedia';
+import MyInfo from './MyInfo';
+import MyReviews from './MyReviews';
+import SignIn from './SignIn';
+import UploadWhisky from './UploadWhisky';
+import WhiskyList from './WhiskyList';
+import SingleWhisky from './SingleWhisky';
 
 const styles = StyleSheet.create({
   container: {
@@ -34,7 +40,7 @@ const Main = () => {
       <BottomBar/>
       <Switch>
         <Route path="/" exact>
-          <Home/>
+          <WhiskyList/>
         </Route>
         <Route path="/sign-up" exact>
           <SignUpPage />
@@ -46,13 +52,34 @@ const Main = () => {
           <SignUpEmail/>
         </Route>
         <Route path="/userpage" exact>
-          <Userpage />
+          <Userpage/>
         </Route>
         <Route path="/upload-userinfo" exact>
           <UploadUserInfo/>
         </Route>
+        <Route path="/upload-media" exact>
+          <UploadMedia/>
+        </Route>
         <Route path='/choose-pic' exact>
           <ChoosePic/>
+        </Route>
+        <Route path='/my-info' exact>
+          <MyInfo/>
+        </Route>
+        <Route path='/sign-in' exact>
+          <SignIn/>
+        </Route>
+        <Route path='/my-reviews' exact>
+          <MyReviews/>
+        </Route>
+        <Route path='/sign-in-email' exact>
+          <SignInEmail/>
+        </Route>
+        <Route path='/upload-whisky' exact>
+          <UploadWhisky/>
+        </Route>
+        <Route path="/whiskies/:id" exact>
+          <SingleWhisky />
         </Route>
         <Redirect to="/" />
       </Switch>

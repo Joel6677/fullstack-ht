@@ -22,6 +22,7 @@ const FormikTextInput = ({ name, ...props }) => {
       <TextInput
         onChangeText={(value) => helpers.setValue(value)}
         onBlur={() => helpers.setTouched(true)}
+        multiline={true}
         value={field.value}
         error={showError}
         placeholderTextColor={'#A6ACAF'}

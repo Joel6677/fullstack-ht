@@ -9,7 +9,7 @@ import { useHistory } from 'react-router-native';
 import theme from '../theme';
 import { StateContext } from '../state';
 import { Appbar } from 'react-native-paper';
-import {SignOut} from '../firebase/firebaseFunctions';
+import {SignOut} from '../firebase/auth';
 
 const styles = StyleSheet.create({
   container: {
@@ -28,7 +28,6 @@ const styles = StyleSheet.create({
 const AppBar = () => {
   const history = useHistory();
   const { state, dispatch } = useContext(StateContext);
-
 
   return (
 

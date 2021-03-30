@@ -1,5 +1,5 @@
 import React, { useState, useContext } from 'react';
-import { View, StyleSheet, Text, TouchableWithoutFeedback, Alert} from 'react-native';
+import { View, StyleSheet, Text, TouchableWithoutFeedback} from 'react-native';
 import { Button } from 'react-native-paper';
 import { Formik } from 'formik';
 import { useHistory } from 'react-router-native';
@@ -8,7 +8,7 @@ import FormikTextInput from './FormikTextInput';
 import DateTimePicker from '@react-native-community/datetimepicker';
 import theme from '../theme';
 import Moment from 'moment';
-import { uploadUserInfo } from '../firebase/firebaseFunctions';
+import { uploadUserInfo } from '../firebase/auth';
 import { StateContext } from '../state';
 
 const styles = StyleSheet.create({
@@ -129,24 +129,6 @@ const UploadUserInfo = () => {
         uploadUserInfo(firstName, lastName, date, bio);
 
         history.push('/');
-
-        Alert.alert(
-            'Alert Title',
-            'My Alert Msg',
-            [
-              {
-                text: 'Ask me later',
-                onPress: () => console.log('Ask me later pressed')
-              },
-              {
-                text: 'Cancel',
-                onPress: () => console.log('Cancel Pressed'),
-                style: 'cancel'
-              },
-              { text: 'OK', onPress: () => console.log('OK Pressed') }
-            ],
-            { cancelable: false }
-          );
       
     };
 

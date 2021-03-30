@@ -1,11 +1,11 @@
 import React from 'react';
-import { StyleSheet, View, Alert } from 'react-native';
+import { StyleSheet, View } from 'react-native';
 import { Formik } from 'formik';
 import * as yup from 'yup';
 import { useHistory } from 'react-router-native';
 
 import { Button} from 'react-native-paper';
-import { SignUpWithEmail} from '../firebase/firebaseFunctions';
+import { SignUpWithEmail } from '../firebase/auth';
 import Text from './Text';
 import FormikTextInput from './FormikTextInput';
 
@@ -91,11 +91,7 @@ const SignUp = () => {
   const onSubmit = async (values) => {
     const { email, password } = values;
 
-    if (await SignUpWithEmail(email, password)) {
-      emailVerificationLink();
-      history.push('/choose-pic'); 
-    }
-     
+    if (await SignUpWithEmail(email, password)) history.push('/choose-pic'); 
     
   };
 
@@ -107,9 +103,7 @@ const SignUp = () => {
           Sign up with email
         </Text>
       </View>
-
-
-
+      
       <Formik
         initialValues={initialValues}
         onSubmit={onSubmit}

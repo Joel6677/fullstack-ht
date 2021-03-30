@@ -1,17 +1,22 @@
 import React from 'react';
-import { StyleSheet, View } from 'react-native';
+import { StyleSheet, View, Alert } from 'react-native';
 import { Formik } from 'formik';
 import * as yup from 'yup';
 import { useHistory } from 'react-router-native';
 
 import CustomButton from './CustomButton';
 import FormikTextInput from './FormikTextInput';
-import useSignIn from '../hooks/useSignIn';
+import { SignInWithEmail } from '../firebase/auth';
+
 
 const styles = StyleSheet.create({
   container: {
-    backgroundColor: 'white',
-    padding: 15,
+    flexDirection: 'column',
+    justifyContent: 'center',
+    height: '100%',
+    width: '100%',
+    position: 'absolute',
+    zIndex: 1
   },
   fieldContainer: {
     marginBottom: 15,
@@ -22,12 +27,12 @@ const styles = StyleSheet.create({
 });
 
 const initialValues = {
-  username: '',
+  email: '',
   password: '',
 };
 
 const validationSchema = yup.object().shape({
-  username: yup.string().required('Username is required'),
+  email: yup.string().required('Email is required'),
   password: yup.string().required('Password is required'),
 });
 
@@ -35,7 +40,7 @@ const SignInForm = ({ onSubmit }) => {
   return (
     <View style={styles.container}>
       <View style={styles.fieldContainer}>
-        <FormikTextInput name="username" placeholder="Username" testID="usernameField" />
+        <FormikTextInput name="email" placeholder="Email" testID="emailField" />
       </View>
       <View style={styles.fieldContainer}>
         <FormikTextInput
@@ -63,15 +68,18 @@ export const SignInContainer = ({ onSubmit }) => {
 };
 
 const SignInEmail = () => {
-  const [signIn] = useSignIn();
   const history = useHistory();
 
   const onSubmit = async (values) => {
-    const { username, password } = values;
+    const { email, password } = values;
+      
+      try {
+        SignInWithEmail(email, password);
+      } catch (err) {
+        console.log(err);
+      }
+      history.push('/');
 
-    await signIn({ username, password });
-
-    history.push('/');
   };
 
   return <SignInContainer onSubmit={onSubmit} />;
