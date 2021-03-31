@@ -78,6 +78,7 @@ const styles = StyleSheet.create({
 const WhiskyItem = ({ whisky, ...props }) => {
   const {
     brand,
+    nameAddition,
     age,
     distillationDate,
     bottlingDate,
@@ -88,8 +89,7 @@ const WhiskyItem = ({ whisky, ...props }) => {
     // ratingAverage
   } = whisky;
 
-
-//brand-ddate/bdate-nameadd-abv-size
+//brand-age-ddate/bdate-nameadd-abv-size
 
   return (
     <View style={styles.container} {...props}>
@@ -107,27 +107,34 @@ const WhiskyItem = ({ whisky, ...props }) => {
           >
             {brand}
           </Text>
-          <Text
+          {age&&<Text
             style={styles.descriptionText}
             color="textSecondary"
             testID="whiksyItemAge"
           >
             {age} YO
-          </Text>
-          <Text
+          </Text>}
+          {distillationDate&&<Text
             style={styles.descriptionText}
             color="textSecondary"
             testID="whiksyItemDistillationDate"
           >
             {distillationDate}
-          </Text>
-          <Text
+          </Text>}
+          {bottlingDate&&<Text
             style={styles.descriptionText}
             color="textSecondary"
             testID="whiksyItemBottlingDate"
           >
             {bottlingDate}
-          </Text>
+          </Text>}
+          {nameAddition&&<Text
+            style={styles.descriptionText}
+            color="textSecondary"
+            testID="whiksyItemBottlingDate"
+          >
+            {nameAddition}
+          </Text>}
           <Text
             style={styles.descriptionText}
             color="textSecondary"

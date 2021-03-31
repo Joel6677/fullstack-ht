@@ -16,7 +16,8 @@ const styles = StyleSheet.create({
         height: '100%',
         width: '100%',
         position: 'absolute',
-        zIndex: 1
+        zIndex: 1,
+        paddingVertical: 80,
     },
     separator: {
         height: 10,

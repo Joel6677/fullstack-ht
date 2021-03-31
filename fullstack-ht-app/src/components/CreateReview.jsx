@@ -1,12 +1,11 @@
 import React from 'react';
 import { StyleSheet, View } from 'react-native';
+import {Button} from 'react-native-paper';
 import { Formik } from 'formik';
 import * as yup from 'yup';
 import { useHistory } from 'react-router-native';
 import { useMutation } from '@apollo/react-hooks';
 import * as firebase from 'firebase';
-
-import Button from './Button';
 import FormikTextInput from './FormikTextInput';
 import { CREATE_REVIEW } from '../graphql/mutations';
 
@@ -64,33 +63,33 @@ const CreateReview = () => {
   
   const history = useHistory();
 
-  const onSubmit = async (values) => {
+  // const onSubmit = async (values) => {
 
-    // useCollection hook 
-    // firebase.firestore().collection('whiskies').getClicked whisky id
+  //   // useCollection hook 
+  //   // firebase.firestore().collection('whiskies').getClicked whisky id
 
-    });
+  //   }
+  //   const review = {
+  //     ...values,
+  //     rating: parseInt(values.rating),
+  //   };
 
-    const review = {
-      ...values,
-      rating: parseInt(values.rating),
-    };
+  //   const { data } = await createReview({ variables: { review } });
 
-    const { data } = await createReview({ variables: { review } });
-
-    if (data && data.createReview) {
-      history.push(`/repositories/${data.createReview.repositoryId}`);
-    }
-  };
+  //   if (data && data.createReview) {
+  //     history.push(`/repositories/${data.createReview.repositoryId}`);
+  //   }
+  // };
 
   return (
-    <Formik
-      initialValues={initialValues}
-      onSubmit={onSubmit}
-      validationSchema={validationSchema}
-    >
-      {({ handleSubmit }) => <CreateReviewForm onSubmit={handleSubmit} />}
-    </Formik>
+    <></>
+    // <Formik
+    //   initialValues={initialValues}
+    //   onSubmit={onSubmit}
+    //   validationSchema={validationSchema}
+    // >
+    //   {({ handleSubmit }) => <CreateReviewForm onSubmit={handleSubmit} />}
+    // </Formik>
   );
 };
 

@@ -21,6 +21,7 @@ import SignIn from './SignIn';
 import UploadWhisky from './UploadWhisky';
 import WhiskyList from './WhiskyList';
 import SingleWhisky from './SingleWhisky';
+import CreateReview from './CreateReview';
 
 const styles = StyleSheet.create({
   container: {
@@ -80,6 +81,9 @@ const Main = () => {
         </Route>
         <Route path="/whiskies/:id" exact>
           <SingleWhisky />
+        </Route>
+        <Route path="/create-review" exact>
+          <CreateReview />
         </Route>
         <Redirect to="/" />
       </Switch>
