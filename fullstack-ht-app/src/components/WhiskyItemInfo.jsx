@@ -8,12 +8,10 @@ import formatInThousands from '../utils/formatInThousands';
 
 const styles = StyleSheet.create({
     container: {
-        height: '100%',
-        width: '100%',
-        position: 'absolute',
+        backgroundColor: 'orange'
     },
     headingContainer: {
-        flexDirection: 'row',  
+        flexDirection: 'row',
         alignSelf: 'center',
         marginBottom: 15
     },
@@ -27,13 +25,13 @@ const styles = StyleSheet.create({
         marginBottom: 15
     },
     descriptionContainer: {
-        
+
     },
     bottomContainer: {
         flexDirection: 'row',
         justifyContent: 'space-around',
         paddingVertical: 10
-        
+
     },
     avatarContainer: {
         flexGrow: 0,
@@ -49,7 +47,7 @@ const styles = StyleSheet.create({
     },
     headingText: {
         marginBottom: 5
-    },  
+    },
     nameText: {
         marginBottom: 5,
     },
@@ -57,12 +55,11 @@ const styles = StyleSheet.create({
         flexGrow: 1,
     },
     buttonContainer: {
-
+        marginTop: 5,
     },
     avatar: {
-        width: 200,
+        width: 120,
         height: 200,
-        borderRadius: 200
     },
     countItem: {
         flexGrow: 0,
@@ -82,33 +79,31 @@ const styles = StyleSheet.create({
 });
 
 const CountItem = ({ label, count, ...props }) => {
-  return (
-    <View style={styles.countItem}>
-      <Text style={styles.countItemCount} fontWeight="bold" {...props}>
-        {formatInThousands(count)}
-      </Text>
-      <Text color="textSecondary">{label}</Text>
-    </View>
-  );
+    return (
+        <View style={styles.countItem}>
+            <Text style={styles.countItemCount} fontWeight="bold" {...props}>
+                {formatInThousands(count)}
+            </Text>
+            <Text color="textSecondary">{label}</Text>
+        </View>
+    );
 };
 
-const WhiskyItemInfo = ({ whisky }) => {
-
-    console.log('whisky: ', whisky);
+const WhiskyItemInfo = ({ whisky, id }) => {
 
     const {
-        distillery, //
-        brand, // 
+        distillery,
+        brand,
         nameAddition,
-        country, //
+        country,
         region,
-        category, //
-        age, //
-        abv, // 
-        bottlesize, // 
+        category,
+        age,
+        abv,
+        bottlesize,
         bottler,
         series,
-        description, //
+        description,
         caskType,
         caskNumber,
         numberOfBottles,
@@ -121,6 +116,7 @@ const WhiskyItemInfo = ({ whisky }) => {
         ratingAverage
     } = whisky;
 
+    const history = useHistory();
 
     return (
         <View style={styles.container}>
@@ -134,18 +130,18 @@ const WhiskyItemInfo = ({ whisky }) => {
                         numberOfLines={1}
                         testID="whiskyItemBrand"
                     >
-                        {brand}{' '}
+                        {brand}
                     </Text>
-                    {age && <Text
+                    {!!age && <Text
                         style={styles.headingText}
                         color="textSecondary"
                         fontWeight="bold"
                         fontSize="heading"
                         testID="whiksyItemAge"
                     >
-                        {age} YO{' '}
+                        {' '}{age} YO{' '}
                     </Text>}
-                    {distillationDate && <Text
+                    {!!distillationDate && <Text
                         style={styles.headingText}
                         fontWeight="bold"
                         fontSize="heading"
@@ -154,7 +150,7 @@ const WhiskyItemInfo = ({ whisky }) => {
                     >
                         {distillationDate}{'/'}
                     </Text>}
-                    {bottlingDate && <Text
+                    {!!bottlingDate && <Text
                         style={styles.headingText}
                         fontWeight="bold"
                         fontSize="heading"
@@ -163,7 +159,7 @@ const WhiskyItemInfo = ({ whisky }) => {
                     >
                         {bottlingDate}{' '}
                     </Text>}
-                    {nameAddition && <Text
+                    {!!nameAddition && <Text
                         style={styles.headingText}
                         fontWeight="bold"
                         fontSize="heading"
@@ -198,8 +194,9 @@ const WhiskyItemInfo = ({ whisky }) => {
 
                     <View style={styles.descriptionContainer}>
                         <Text
-                            style={styles.headingText}
+                            style={styles.descriptionTextText}
                             fontSize="subheading"
+                            numberOfLines={1}
                             testID="whiskyItemDistillery"
                         >
                             {description}
@@ -222,7 +219,7 @@ const WhiskyItemInfo = ({ whisky }) => {
                     >
                         Country: {country}
                     </Text>
-                    {region&&<Text
+                    {!!region && <Text
                         style={styles.headingText}
                         fontSize="subheading"
                         testID="whiskyItemRegion"
@@ -257,35 +254,35 @@ const WhiskyItemInfo = ({ whisky }) => {
                     >
                         Bottle size: {bottlesize}L
                 </Text>
-                    {bottler&&<Text
+                    {!!bottler && <Text
                         style={styles.headingText}
                         fontSize="subheading"
                         testID="whiskyItemBottler"
                     >
                         Bottler: {bottler}
                     </Text>}
-                    {caskType&&<Text
+                    {!!caskType && <Text
                         style={styles.headingText}
                         fontSize="subheading"
                         testID="whiskyItemCaskType"
                     >
                         Cask type: {caskType}
                     </Text>}
-                    {series&&<Text
+                    {!!series && <Text
                         style={styles.headingText}
                         fontSize="subheading"
                         testID="whiskyItemSeries"
                     >
                         Series: {series}
                     </Text>}
-                    {caskNumber&&<Text
+                    {!!caskNumber && <Text
                         style={styles.headingText}
                         fontSize="subheading"
                         testID="whiskyItemCaskNumber"
                     >
                         Cask number: {caskNumber}
                     </Text>}
-                    {numberOfBottles&&<Text
+                    {!!numberOfBottles && <Text
                         style={styles.headingText}
                         fontSize="subheading"
                         testID="whiskyItemNumberOfBottles"
@@ -301,15 +298,15 @@ const WhiskyItemInfo = ({ whisky }) => {
                             Post treatment:
                         </Text>
 
-                        {chillFiltration&&<Avatar.Icon style={styles.avatarIconContainer} size={30} icon='water' />}
-                        {artificialColoring&&<Avatar.Icon style={styles.avatarIconContainer} size={30} icon='snowflake' />}
+                        {!!chillFiltration && <Avatar.Icon style={styles.avatarIconContainer} size={30} icon='water' />}
+                        {!!artificialColoring && <Avatar.Icon style={styles.avatarIconContainer} size={30} icon='snowflake' />}
 
                     </View>
 
                 </View>
 
             </View>
-            <Divider/>
+            <Divider />
             <View style={styles.bottomContainer}>
                 <CountItem
                     count={reviewCount}
@@ -322,8 +319,7 @@ const WhiskyItemInfo = ({ whisky }) => {
                     testID="whiskyItemRating"
                 />
             </View>
-            <Divider/>
-            <Button icon="camera" mode="outlined" onPress={() => history.push('/create-review')}>Create review</Button>
+            <Button style={styles.buttonContainer} mode="outlined" onPress={() => { history.push(`/create-review/${id}`); }}>Create review</Button>
         </View>
     );
 };

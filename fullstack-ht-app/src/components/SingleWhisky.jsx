@@ -2,6 +2,7 @@ import React, {useState, useEffect} from 'react';
 import { useParams } from 'react-router-native';
 import { useHistory } from 'react-router-native';
 import { FlatList, StyleSheet, View } from 'react-native';
+import { Divider } from 'react-native-paper';
 
 import WhiskyItemInfo from './WhiskyItemInfo';
 import ReviewItem from './ReviewItem';
@@ -11,24 +12,21 @@ const styles = StyleSheet.create({
   container: {
     height: '100%',
     width: '100%',
-    position: 'absolute',
     paddingVertical: 80,
+    position: 'absolute',
     zIndex: 1,
   },  
   separator: {
     height: 10,
   },
-  reviewItem: {
-    padding: 15,
-  },
 });
 
 const ItemSeparator = () => <View style={styles.separator} />;
 
-const WhiskyInfo = ({ whisky }) => {
+const WhiskyInfo = ({ whisky, id }) => {
   return (
     <>
-      <WhiskyItemInfo whisky={whisky}/>
+      <WhiskyItemInfo whisky={whisky} id={id}/>
       <ItemSeparator />
     </>
   );
@@ -74,20 +72,17 @@ const SingleWhisky = () => {
 }, [history]);
 
 
-  // get whisky by id
-
-  // get whisky reviews
 
   return (
     <View style={styles.container}>
       <FlatList
         data={reviews}
         renderItem={({ item }) => (
-          <ReviewItem style={styles.reviewItem} review={item} />
+            <ReviewItem review={item} />    
         )}
         keyExtractor={({ id }) => id}
         ListHeaderComponent={() =>
-          <WhiskyInfo whisky={whisky} />
+          <WhiskyInfo whisky={whisky} id={id} />
         }
         ItemSeparatorComponent={ItemSeparator}
       />

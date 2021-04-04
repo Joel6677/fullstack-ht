@@ -7,7 +7,7 @@ import { StateContext } from '../state';
 export const GET_USERINFO = () => {
 
     firebase.firestore()
-    .collection('users')
+    .collection('user')
     .doc(firebase.auth().currentUser.uid)
     .collection('userinfo')
     .get()
@@ -23,6 +23,22 @@ export const GET_USERINFO = () => {
         console.log("Error getting documents: ", error);
       });
       
+
+};
+
+export const GET_USERNAME = () => {
+
+  firebase.firestore()
+  .collection('userinfo')
+  .doc(firebase.auth().currentUser.uid)
+  .get()
+    .then((doc) => {
+        console.log('doc data: ', doc.data());
+      })
+    .catch((error) => {
+      console.log("Error getting documents: ", error);
+    });
+    
 
 };
 

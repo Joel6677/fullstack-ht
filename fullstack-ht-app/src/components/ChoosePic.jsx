@@ -33,10 +33,8 @@ const styles = StyleSheet.create({
   },
   iconButton: {
     position: 'absolute',
-    width: 200,
-    height: 200,
-    paddingLeft: 100,
-    marginLeft: 150,
+    paddingTop: 100,
+    // marginLeft: 150,
     zIndex: 2
   },
   snackbar: {
@@ -158,7 +156,7 @@ const ChoosePic = () => {
     <Text style={styles.heading} color={'primary'} fontSize={'heading'} fontWeight={'bold'}>Choose profile picture</Text>
     <Button icon='folder-image' mode='contained' style={styles.button} onPress={pickProfilePicFromLibrary}>Pick an image</Button>
     <Button icon='camera' mode='contained' style={styles.button} onPress={takeProfilePic} >Take a picture</Button>
-    {image && <Image source={{ uri: image }} style={{ width: 100, height: 100 }} />}
+    {image && <Image source={{ uri: image }} style={{ width: 150, height: 150 }} />}
     <Button compact={true} icon='arrow-right-bold-box' mode='contained' style={styles.nextButton} onPress={()=>(history.push('/upload-userinfo'))}>Next</Button>
     <Snackbar
         style={styles.snackbar}
@@ -172,8 +170,6 @@ const ChoosePic = () => {
         }}>
         Image uploaded.
       </Snackbar>
-      {image && <IconButton
-        icon={'check-circle-outline'} size={50} style={styles.iconButton} color='#b157e6'/>}
   </View>
 
   );

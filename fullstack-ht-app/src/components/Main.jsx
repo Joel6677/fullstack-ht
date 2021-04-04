@@ -82,7 +82,7 @@ const Main = () => {
         <Route path="/whiskies/:id" exact>
           <SingleWhisky />
         </Route>
-        <Route path="/create-review" exact>
+        <Route path="/create-review/:id" exact>
           <CreateReview />
         </Route>
         <Redirect to="/" />

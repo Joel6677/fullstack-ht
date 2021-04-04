@@ -1,42 +1,43 @@
 import React from 'react';
 import { View, Image, StyleSheet } from 'react-native';
-import { Linking } from 'expo';
-
-import theme from '../theme';
 import Text from './Text';
-import CustomButton from './CustomButton';
 import formatInThousands from '../utils/formatInThousands';
 
 const styles = StyleSheet.create({
   container: {
-    backgroundColor: 'white',
-    padding: 15,
-  },
-  topContainer: {
+    padding: 5,
     flexDirection: 'row',
-    marginBottom: 15,
-  },
-  bottomContainer: {
-    flexDirection: 'row',
-    justifyContent: 'space-around',
-  },
-  avatarContainer: {
-    flexGrow: 0,
-    marginRight: 20,
   },
   contentContainer: {
     flexGrow: 1,
-    flexShrink: 1,
+    backgroundColor: 'green'
+  },
+  middleContainer: {
+    // alignItems: 'center',
+    flexGrow: 0,
+    backgroundColor: 'brown'
+
+  },
+  bottomContainer: {
+    flexGrow: 0,
+    backgroundColor: 'blue',
+    // justifyContent: 'space-around',
+    flexDirection: 'row',
+  },
+  avatarContainer: {
+    marginRight: 5,
+  },
+  topContainer: {
+    flexGrow: 1,
+    padding: 5,
+    // alignItems: 'center'
   },
   nameText: {
     marginBottom: 5,
   },
-  descriptionText: {
-    flexGrow: 1,
-  },
   avatar: {
-    width: 45,
-    height: 45,
+    width: 80,
+    height: 160,
   },
   countItem: {
     flexGrow: 0,
@@ -47,33 +48,18 @@ const styles = StyleSheet.create({
   countItemCount: {
     marginBottom: 5,
   },
-  languageContainer: {
-    marginTop: 10,
-    flexDirection: 'row',
-  },
-  languageText: {
-    color: 'white',
-    backgroundColor: theme.colors.primary,
-    borderRadius: theme.roundness,
-    flexGrow: 0,
-    paddingVertical: 3,
-    paddingHorizontal: 6,
-  },
-  githubButton: {
-    marginTop: 15,
-  },
 });
 
-// const CountItem = ({ label, count, ...props }) => {
-//   return (
-//     <View style={styles.countItem}>
-//       <Text style={styles.countItemCount} fontWeight="bold" {...props}>
-//         {formatInThousands(count)}
-//       </Text>
-//       <Text color="textSecondary">{label}</Text>
-//     </View>
-//   );
-// };
+const CountItem = ({ label, count, ...props }) => {
+  return (
+    <View style={styles.countItem}>
+      <Text style={styles.countItemCount} fontWeight="bold" {...props}>
+        {formatInThousands(count)}
+      </Text>
+      <Text color="textSecondary">{label}</Text>
+    </View>
+  );
+};
 
 const WhiskyItem = ({ whisky, ...props }) => {
   const {
@@ -83,86 +69,56 @@ const WhiskyItem = ({ whisky, ...props }) => {
     distillationDate,
     bottlingDate,
     abv,
-    bottlesize,
+    bottleSize,
     downloadURL,
-    // reviewCount,
-    // ratingAverage
+    reviewCount,
+    ratingAverage,
+    bottler,
   } = whisky;
 
-//brand-age-ddate/bdate-nameadd-abv-size
+
 
   return (
     <View style={styles.container} {...props}>
-      <View style={styles.topContainer}>
+      
         <View style={styles.avatarContainer}>
           <Image source={{ uri: downloadURL}} style={styles.avatar} />
         </View>
         <View style={styles.contentContainer}>
+        <View style={styles.topContainer}>
           <Text
             style={styles.nameText}
-            fontWeight="bold"
-            fontSize="subheading"
-            numberOfLines={1}
-            testID="whiskyItemBrand"
+            testID="whiskyItemName"
+            fontSize='subheading'
+            // fontWeight='bold'
           >
-            {brand}
-          </Text>
-          {age&&<Text
-            style={styles.descriptionText}
-            color="textSecondary"
-            testID="whiksyItemAge"
-          >
-            {age} YO
-          </Text>}
-          {distillationDate&&<Text
-            style={styles.descriptionText}
-            color="textSecondary"
-            testID="whiksyItemDistillationDate"
-          >
-            {distillationDate}
-          </Text>}
-          {bottlingDate&&<Text
-            style={styles.descriptionText}
-            color="textSecondary"
-            testID="whiksyItemBottlingDate"
-          >
-            {bottlingDate}
-          </Text>}
-          {nameAddition&&<Text
-            style={styles.descriptionText}
-            color="textSecondary"
-            testID="whiksyItemBottlingDate"
-          >
-            {nameAddition}
-          </Text>}
-          <Text
-            style={styles.descriptionText}
-            color="textSecondary"
-            testID="whiskyItemAbv"
-          >
-            {abv}%
-          </Text>
-          <Text
-            style={styles.descriptionText}
-            color="textSecondary"
-            testID="whiskyItemBottlesize"
-          >
-            {bottlesize}L
+            {brand+' '}{age+' '}{distillationDate+'/'}{bottlingDate+' '}
+            {nameAddition+' '}{abv+'% '}{bottleSize+'L'}
           </Text>
         </View>
-      </View>
-      {/* <View style={styles.bottomContainer}>
-        <CountItem
-          count={reviewCount}
-          label="Reviews"
-          testID="repositoryItemReviews"
-        />
+        <View style={styles.middleContainer}>
+        <Text
+            style={styles.nameText}
+            fontSize='subheading'
+            testID="whiskyItemBottlesize"
+          >
+            {bottler}
+            </Text>
+        </View>
+        <View style={styles.bottomContainer}>
         <CountItem
           count={ratingAverage}
           label="Rating"
           testID="repositoryItemRating"
         />
-      </View> */}
+        <CountItem
+          count={reviewCount}
+          label="Reviews"
+          testID="repositoryItemReviews"
+        />
+      </View>
+      </View>
+
     </View>
   );
 };

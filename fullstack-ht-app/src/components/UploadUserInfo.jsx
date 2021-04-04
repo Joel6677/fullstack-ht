@@ -8,7 +8,7 @@ import FormikTextInput from './FormikTextInput';
 import DateTimePicker from '@react-native-community/datetimepicker';
 import theme from '../theme';
 import Moment from 'moment';
-import { uploadUserInfo } from '../firebase/auth';
+import { uploadUserInfo } from '../firebase/uploads';
 import { StateContext } from '../state';
 
 const styles = StyleSheet.create({
@@ -94,7 +94,7 @@ const UserinfoForm = ({ onSubmit , date, pressed }) => {
                     name="bio"
                     placeholder="Bio"
                     multiline
-                    numberOfLines={4}
+                    numberOfLines={1}
                 />
             </View>
 
@@ -126,7 +126,7 @@ const UploadUserInfo = () => {
     const onSubmit = async (values) => {
         const { firstName, lastName, bio } = values;
 
-        uploadUserInfo(firstName, lastName, date, bio);
+        uploadUserInfo(firstName, lastName, Moment(date).format('DD-MM-YYYY'), bio);
 
         history.push('/');
       

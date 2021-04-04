@@ -10,9 +10,8 @@ export const uploadUserInfo = async (firstName, lastName, birthdate, bio) => {
         const currentUser = firebase.auth().currentUser;
         console.log('current user: ', currentUser);
         const db = firebase.firestore();
-        db.collection('users')
+        db.collection('userinfo')
             .doc(currentUser.uid)
-            .collection('userinfo')
             .add({
                 firstname: firstName,
                 lastname: lastName,
@@ -24,6 +23,8 @@ export const uploadUserInfo = async (firstName, lastName, birthdate, bio) => {
     }
 
 };
+
+
 
 export const SignUpWithEmail = async (email, password) => {
     try {

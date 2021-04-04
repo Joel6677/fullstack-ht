@@ -1,18 +1,17 @@
 import React, { useState, useEffect } from 'react';
 import { FlatList, View, StyleSheet, TouchableOpacity } from 'react-native';
 import { useHistory } from 'react-router-native';
-import { Searchbar } from 'react-native-paper';
+import { Searchbar, Divider } from 'react-native-paper';
 import { useDebounce } from 'use-debounce';
 
 import WhiskyItem from './WhiskyItem';
-import { useCollection } from 'react-firebase-hooks/firestore';
 // import useRepositories from '../hooks/useRepositories';
 import Picker from './Picker';
 import * as firebase from 'firebase';
 
 const styles = StyleSheet.create({
     container: {
-        padding: 20,
+        padding: 5,
         height: '100%',
         width: '100%',
         position: 'absolute',
@@ -20,17 +19,26 @@ const styles = StyleSheet.create({
         paddingVertical: 80,
     },
     separator: {
-        height: 10,
+        marginVertical: 5
     },
     headerContainer: {
-        padding: 15,
+        padding: 10,
     },
     searchContainer: {
         marginBottom: 15,
     },
 });
 
-const ItemSeparator = () => <View style={styles.separator} />;
+const ItemSeparator = () => {
+
+
+    return(<View style={styles.separator}>
+
+        <Divider/>
+
+    </View>);
+
+};
 
 const orderByOptions = [
     { label: 'Latest repositories', value: 'latest' },
@@ -107,9 +115,9 @@ export class WhiskyListContainer extends React.Component {
                 )}
                 ItemSeparatorComponent={ItemSeparator}
                 // ListHeaderComponent={this.renderHeader}
-                onEndReached={onEndReach}
-                onEndReachedThreshold={0.5}
-                initialNumToRender={8}
+                // onEndReached={onEndReach}
+                // onEndReachedThreshold={0.5}
+                // initialNumToRender={8}
             />
         );
     }
@@ -122,7 +130,6 @@ const WhiskyList = () => {
     const [whiskies, setWhiskies] = useState('');
 
     useEffect(() => {
-
         firebase.firestore()
             .collection('whiskies')
             .get()
@@ -132,6 +139,7 @@ const WhiskyList = () => {
                     const id = doc.id;
                     return { id, ...data };
                 });
+                console.log('whiskies: ', posts);
                 setWhiskies(posts);
             })
             .catch((error) => {
@@ -140,21 +148,10 @@ const WhiskyList = () => {
     }, [history]);
     // const [debouncedSearchKeyword] = useDebounce(searchKeyword, 500);
 
-    // iterate through whiskies (flatlist)
-
-    //
-    //   const { repositories, fetchMore } = useRepositories({
-    // first: 8,
-    // ...variablesByOrderBy[orderBy],
-    //     searchKeyword: debouncedSearchKeyword,
-    //   });
-
-      const onEndReach = () => {
+    //   const onEndReach = () => {
         //fetch more
-      };
-    //
-
-      
+    //   };
+    
     return (
         <View style={styles.container}>
             <WhiskyListContainer
@@ -163,7 +160,7 @@ const WhiskyList = () => {
                 // onOrderByChange={(newOrderBy) => {
                 //     setOrderBy(newOrderBy);
                 // }}
-                onEndReach={onEndReach}
+                // onEndReach={onEndReach}
                 // searchKeyword={searchKeyword}
                 // onSearchKeywordChange={(keyword) => setSearchKeyword(keyword)}
                 onWhiskyPress={(id) => {

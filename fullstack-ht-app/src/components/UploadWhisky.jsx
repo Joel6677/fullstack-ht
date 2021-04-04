@@ -103,6 +103,8 @@ const validationSchema = yup.object().shape({
     .required('Age is required'),
   abv: yup
     .number()
+    .min(0, 'Abv must be non negative number')
+    .max(100, 'Abv can be atmost 100')
     .required('Abv is required'),
   bottleSize: yup
     .number()
@@ -124,11 +126,11 @@ const validationSchema = yup.object().shape({
 
 
 
-const UploadWhiskyForm = ({ onSubmit, pickProfilePicFromLibrary, pressed, distillationDate, bottlingDate }) => {
+const UploadWhiskyForm = ({ onSubmit, pickProfilePicFromLibrary, distillationPressed, bottlingPressed, distillationDate, bottlingDate }) => {
 
   const { state, dispatch } = useContext(StateContext);
-  const distillationDateText = pressed ? Moment(distillationDate).format('DD-MM-YYYY') : 'Distillation date';
-  const bottlingDateText = pressed ? Moment(bottlingDate).format('DD-MM-YYYY') : 'Bottling date';
+  const distillationDateText = distillationPressed ? Moment(distillationDate).format('DD-MM-YYYY') : 'Distillation date';
+  const bottlingDateText = bottlingPressed ? Moment(bottlingDate).format('DD-MM-YYYY') : 'Bottling date';
 
   return (
     <View>
@@ -193,7 +195,7 @@ const UploadWhiskyForm = ({ onSubmit, pickProfilePicFromLibrary, pressed, distil
         <FormikTextInput
           name="bottleSize"
           keyboardType="numeric"
-          placeholder="Bottlesize"
+          placeholder="Bottlesize (Liter)"
         />
       </View>
 
@@ -242,7 +244,7 @@ const UploadWhiskyForm = ({ onSubmit, pickProfilePicFromLibrary, pressed, distil
           name="description"
           placeholder="Description"
           multiline
-          numberOfLines={6}
+          numberOfLines={1}
         />
       </View>
 
@@ -282,7 +284,6 @@ const UploadWhiskyForm = ({ onSubmit, pickProfilePicFromLibrary, pressed, distil
 
       </View>
 
-
       <Button icon='camera' mode='outlined' onPress={pickProfilePicFromLibrary} style={styles.fieldContainer}>Upload image</Button>
 
       <Button icon={'bottle-wine'} style={styles.fieldContainer} mode='outlined' onPress={onSubmit}>
@@ -302,9 +303,10 @@ const UploadWhisky = () => {
   const [nWhiskyID, setNWhiskyID] = useState('');
   const [downloadURL, setDownloadURL] = useState('');
   const {state, dispatch } = useContext(StateContext);
-  const [distillationDate, setDistillationDate] = useState(new Date());
-  const [bottlingDate, setBottlingDate] = useState(new Date());
-  const [pressed, setPressed] = useState(false);
+  const [distillationDate, setDistillationDate] = useState();
+  const [bottlingDate, setBottlingDate] = useState();
+  const [distillationPressed, setDistillationPressed] = useState(false);
+  const [bottlingPressed, setBottlingPressed] = useState(false);
 
 
   const addImageToFirestore = async (downloadURL, whiskyID) => { 
@@ -388,11 +390,6 @@ const UploadWhisky = () => {
 
   };
 
-
-  
-
-
-
   const onSubmit = async (values) => {
     const {distillery, brand, nameAddition, country, region, category, age, abv, bottleSize, 
     bottler, series, description, caskType, caskNumber, numberOfBottles} = values;
@@ -413,29 +410,33 @@ const UploadWhisky = () => {
       caskType: caskType,
       caskNumber: caskNumber,
       numberOfBottles: numberOfBottles,
-      distillationDate: distillationDate,
-      bottlingDate: bottlingDate,
+      distillationDate: Moment(distillationDate).format('DD-MM-YYYY'),
+      bottlingDate: Moment(bottlingDate).format('DD-MM-YYYY'),
       artificialColoring: state.acChecked,
       chillFiltration: state.cfChecked,
-      downloadURL: downloadURL
+      downloadURL: downloadURL,
+      reviewCount: 0,
+      rating: ''
+
+
     });
     history.push('/');
   };
 
 
-
   const onDistillationChange = (event, selectedDate) => {
     const currentDate = selectedDate || distillationDate;
+    console.log(currentDate, ' ', selectedDate);
     dispatch({type: "SET_SHOW_DISTILLATION_DATE", payload: false});
     setDistillationDate(currentDate);
-    setPressed(true);
+    setDistillationPressed(true);
   };
 
   const onBottlingChange = (event, selectedDate) => {
     const currentDate = selectedDate || bottlingDate;
     dispatch({type: "SET_SHOW_BOTTLING_DATE", payload: false});
     setBottlingDate(currentDate);
-    setPressed(true);
+    setBottlingPressed(true);
   };
 
   return (
@@ -452,7 +453,7 @@ const UploadWhisky = () => {
         onSubmit={onSubmit}
         validationSchema={validationSchema}
       >
-        {({ handleSubmit }) => <UploadWhiskyForm onSubmit={handleSubmit} pickProfilePicFromLibrary={pickProfilePicFromLibrary} distillationDate={distillationDate} bottlingDate={bottlingDate} pressed={pressed} />}
+        {({ handleSubmit }) => <UploadWhiskyForm onSubmit={handleSubmit} pickProfilePicFromLibrary={pickProfilePicFromLibrary} distillationDate={distillationDate} bottlingDate={bottlingDate} distillationPressed={distillationPressed} bottlingPressed={bottlingPressed} />}
       </Formik>
       {image && <Image source={{ uri: image }} style={{ width: 100, height: 100, alignSelf: 'center' }} />} 
       </ScrollView>
