@@ -5,7 +5,7 @@ import * as yup from 'yup';
 import { useHistory } from 'react-router-native';
 import uuid from 'uuid';
 import * as ImagePicker from 'expo-image-picker';
-import { Button, Checkbox } from 'react-native-paper';
+import { Button, Checkbox, ProgressBar, Colors } from 'react-native-paper';
 import Text from './Text';
 import FormikTextInput from './FormikTextInput';
 import { StateContext } from '../state';
@@ -99,8 +99,7 @@ const validationSchema = yup.object().shape({
     .string()
     .required('Category is required'),
   age: yup 
-    .number()
-    .required('Age is required'),
+    .number(),
   abv: yup
     .number()
     .min(0, 'Abv must be non negative number')
@@ -114,8 +113,7 @@ const validationSchema = yup.object().shape({
   series: yup
     .string(),
   description: yup
-    .string()
-    .required('Description is required'),
+    .string(),
   caskType: yup
     .string(),
   caskNumber: yup
@@ -303,8 +301,8 @@ const UploadWhisky = () => {
   const [nWhiskyID, setNWhiskyID] = useState('');
   const [downloadURL, setDownloadURL] = useState('');
   const {state, dispatch } = useContext(StateContext);
-  const [distillationDate, setDistillationDate] = useState();
-  const [bottlingDate, setBottlingDate] = useState();
+  const [distillationDate, setDistillationDate] = useState('');
+  const [bottlingDate, setBottlingDate] = useState('');
   const [distillationPressed, setDistillationPressed] = useState(false);
   const [bottlingPressed, setBottlingPressed] = useState(false);
 
@@ -410,13 +408,13 @@ const UploadWhisky = () => {
       caskType: caskType,
       caskNumber: caskNumber,
       numberOfBottles: numberOfBottles,
-      distillationDate: Moment(distillationDate).format('DD-MM-YYYY'),
-      bottlingDate: Moment(bottlingDate).format('DD-MM-YYYY'),
+      distillationDate: distillationDate !== '' ? Moment(distillationDate).format('DD-MM-YYYY') : '',
+      bottlingDate: bottlingDate !== '' ? Moment(bottlingDate).format('DD-MM-YYYY') : '',
       artificialColoring: state.acChecked,
       chillFiltration: state.cfChecked,
       downloadURL: downloadURL,
       reviewCount: 0,
-      rating: ''
+      rating: 0
 
 
     });
@@ -460,7 +458,7 @@ const UploadWhisky = () => {
       { state.showDistillationDate && (
         <DateTimePicker
           testID="dateTimePicker"
-          value={distillationDate}
+          value={new Date()}
           mode={'date'}
           display="default"
           onChange={onDistillationChange}
@@ -469,7 +467,7 @@ const UploadWhisky = () => {
       { state.showBottlingDate && (
         <DateTimePicker
           testID="dateTimePicker"
-          value={bottlingDate}
+          value={new Date()}
           mode={'date'}
           display="default"
           onChange={onBottlingChange}

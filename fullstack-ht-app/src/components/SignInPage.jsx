@@ -11,7 +11,7 @@ const styles = StyleSheet.create({
     flexDirection: 'column',
     backgroundColor: 'white',
     justifyContent: 'center',
-    zIndex: 1000,
+    zIndex: 2,
     height: '100%'
   },
   button: {

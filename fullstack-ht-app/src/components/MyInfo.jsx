@@ -13,6 +13,12 @@ const styles = StyleSheet.create({
     top: 100
 
   },
+  normalText: {
+
+  },
+  bioText: {
+    
+  },
   containerGaller: {
 
   }, 
@@ -23,10 +29,14 @@ const styles = StyleSheet.create({
   image: {
     width: 50,
     height: 50
-  }
+  },
+  separator: {
+    height: 5,
+  },
   
 
 });
+
 
 
 
@@ -34,16 +44,13 @@ const MyInfo = () => {
 
   
   const [userinfo, setUserinfo] = useState([]);
-
+  const [img, setImg] = useState('');
+  const history = useHistory();
 
   useEffect(() => {
-
-
-
     firebase.firestore()
-      .collection('users')
-      .doc(firebase.auth().currentUser.uid)
       .collection('userinfo')
+      .doc(firebase.auth().currentUser.uid)
       .get()
       .then((querySnapshot) => {
         let posts = querySnapshot.docs.map(doc => {
@@ -57,33 +64,52 @@ const MyInfo = () => {
         console.log("Error getting documents: ", error);
       });
 
+    firebase.firestore()
+    .collection("images")
+    .doc(firebase.auth().currentUser.uid)
+    .collection("userImages")
+    .doc("profilePicture")
+    .get().then((snapshot) => {
+      setImg(snapshot.data().downloadURL);
+      })
+      .catch((error) => {
+        console.log("Error getting documents: ", error);
+      });
+
   },[]);
 
-
+  console.log('userinfo: ', userinfo);
 
   return (
     <View style={styles.container}>
 
-
-
-      <View style={styles.containerGallery}>
-
-
-        <FlatList
-          numColumns={3}
-          horizontal={false}
-          data={userinfo}
-          renderItem={({ item }) => (
-            <View
-              style={styles.containerImage}>
-              <Text>{item.bio}</Text>
-            </View>
-
-          )}
-          keyExtractor={({ id }) => id}
-        />
+      <View style={styles.avatarContainer}>
+        <Image source={{ uri: img }} style={styles.avatar} />
       </View>
+      <View>
+        <Text
+          style={styles.normalText}
+          fontSize="subheading"
+        >
+          Name: {userinfo.name}
+        </Text>
 
+        <Text
+          style={styles.normalText}
+          fontSize="subheading"
+        >
+          Birthdate: {userinfo.birhdate}
+        </Text>
+
+
+        <Text
+          style={styles.bioText}
+          fontSize="subheading"
+        >
+          Bio: {userinfo.bio}
+        </Text>
+      </View>
+      
     </View>
   );
 };

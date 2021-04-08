@@ -1,11 +1,13 @@
 import React, { useContext, useEffect, useRef, useState } from 'react';
-import { Animated, StyleSheet, View, Dimensions } from 'react-native';
-import { Button, Avatar, Divider, Drawer } from 'react-native-paper';
+import { Animated, StyleSheet, View, Dimensions, Image } from 'react-native';
+import { Button, Divider, Drawer } from 'react-native-paper';
 import { useHistory } from 'react-router-native';
+import Text from './Text';
 
 import { StateContext } from '../state';
 import CustomButton from './CustomButton';
 import theme from '../theme';
+import * as firebase from 'firebase';
 
 const styles = StyleSheet.create({ 
   sidebar: {
@@ -15,10 +17,27 @@ const styles = StyleSheet.create({
     zIndex: 4,
     position: 'absolute'
   },
+  topContainer: {
+    width: '100%',
+    justifyContent: 'space-evenly',
+    flexDirection: 'row',
+    alignItems: 'center'
+  },  
+  nameText: {
+    marginRight: 10
+  },
+  buttonContainer: {
+    width: '100%',
+    flexDirection: 'row',
+    justifyContent: 'space-around'
+  },
   closeMenu: {
     backgroundColor: 'grey',
     width: '100%',
     height: '100%',
+  },
+  drawerSection: {
+    padding: 5
   },
   sidemenuButtons: {
     top: 50,
@@ -29,8 +48,9 @@ const styles = StyleSheet.create({
     padding: 10
   },
   avatar: {
-    marginLeft: 30,
-    marginBottom: 20
+    width: 60,
+    height: 60,
+    borderRadius: 50
   },
   divider: {
     zIndex: 5,
@@ -45,9 +65,12 @@ const SideMenu = () => {
   const fadeAnim = useRef(new Animated.Value(0)).current ;
   const { state, dispatch } = useContext(StateContext);
   const history = useHistory();
+  const [img, setImg] = useState('');
+  const [username, setUsername] = useState('');
 
-  const route = (route) => {
-      console.log('route: ', route);
+  const route = (route, number) => {
+      
+      setActive(number);
       history.push(route);
       dispatch({type: "SET_OPEN", payload: !state.open});
   };
@@ -80,9 +103,26 @@ const SideMenu = () => {
   useEffect(() => {
     moveMenu();
     fade();
+    {firebase.auth().currentUser&&firebase.firestore()
+    .collection("images")
+    .doc(firebase.auth().currentUser.uid)
+    .collection("userImages")
+    .doc("profilePicture")
+    .get().then((snapshot) => {
+      setImg(snapshot.data().downloadURL);
+    });}
+    {firebase.auth().currentUser&&firebase.firestore()
+    .collection("userinfo")
+    .doc(firebase.auth().currentUser.uid)
+    .get().then((snapshot) => {
+      setUsername(snapshot.data().name);
+    });}
+  
   },[state.open]);
 
   const [active, setActive] = useState('');
+
+  console.log('currentUser: ', firebase.auth().currentUser);
 
   return (
     <>
@@ -93,39 +133,70 @@ const SideMenu = () => {
       }]}>
         <View style={styles.sidemenuButtons}>
 
-          <Avatar.Image style={styles.avatar} size={80} />
+        {firebase.auth().currentUser&&<View style={styles.topContainer}>
+        <Image source={{ uri: img }} style={styles.avatar} />
+        <Text style={styles.nameText} fontSize={'subheading'}>
+          {username} logged in
+        </Text>
+        </View>}
+
+        <View style={styles.buttonContainer}>
+            {!firebase.auth().currentUser&&<Button style={styles.button} mode='outlined' onPress={()=>route('sign-up')}>Sign up</Button>}
+            {!firebase.auth().currentUser&&<Button style={styles.button} mode='outlined' onPress={()=>route('/sign-in-email')}>Sign in</Button>}
+        </View>
+         
 
           <Divider style={styles.divider}/>
-
-          <Drawer.Section title="Some title">
+          <Drawer.Section style={styles.drawerSection}>
             <Drawer.Item
+              icon="upload"
               label="Upload new whisky"
               active={active === 'first'}
-              onPress={() => route('/upload-whisky')}
+              onPress={() => route('/upload-whisky', 'first')}
             />
+          </Drawer.Section>
+          <Drawer.Section style={styles.drawerSection}>
             <Drawer.Item
-              label="Second Item"
+              icon="glass-tulip"
+              label="Collections"
               active={active === 'second'}
-              onPress={() => setActive('second')}
+              onPress={() => route('/collections', 'second')}
+            />
+          </Drawer.Section>
+          <Drawer.Section style={styles.drawerSection}>
+            <Drawer.Item
+              icon="account"
+              label="Profile"
+              active={active === 'third'}
+              onPress={() => route('/userpage','third')}
+            />
+          </Drawer.Section>
+          <Drawer.Section style={styles.drawerSection}>
+            <Drawer.Item
+              icon="account-multiple"
+              label="Users"
+              active={active === 'fourth'}
+              onPress={() => route('/users','fourth')}
+            />
+          </Drawer.Section>
+          <Drawer.Section style={styles.drawerSection}>
+            <Drawer.Item
+              icon="forum"
+              label="Posts"
+              active={active === 'fifth'}
+              onPress={() => route('/posts','fifth')}
             />
           </Drawer.Section>
 
-          <Button color='white' icon='account' style={styles.button} onPress={() => {route('/upload-whisky');}}>
-            Profile
-          </Button>
-
-          <Button color='white' icon='account' style={styles.button} onPress={() => {route('/sign-up');}}>
-            Profile
-          </Button>
-          <Button color='white' icon='star-box' style={styles.button} onPress={() => {console.log('Reviews pressed');}}>
-            Reviews
-          </Button>
-          <Button color='white' icon='map' style={styles.button} onPress={() => {console.log('Map pressed');}}>
-            Map
-          </Button>
-          <Button color='white' icon='shopping' style={styles.button} onPress={() => {console.log('Market pressed');}}>
-            Market
-          </Button>
+          <Drawer.Section style={styles.drawerSection}>
+            <Drawer.Item
+              icon="upload"
+              label="Upload post"
+              active={active === 'sixdth'}
+              onPress={() => route('/upload-post','sixdth')}
+            />
+          </Drawer.Section>
+          
         </View>
       </Animated.View>
       <Animated.View

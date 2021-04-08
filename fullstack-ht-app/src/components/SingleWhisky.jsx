@@ -2,7 +2,6 @@ import React, {useState, useEffect} from 'react';
 import { useParams } from 'react-router-native';
 import { useHistory } from 'react-router-native';
 import { FlatList, StyleSheet, View } from 'react-native';
-import { Divider } from 'react-native-paper';
 
 import WhiskyItemInfo from './WhiskyItemInfo';
 import ReviewItem from './ReviewItem';
@@ -12,12 +11,13 @@ const styles = StyleSheet.create({
   container: {
     height: '100%',
     width: '100%',
-    paddingVertical: 80,
+    paddingTop: 80,
+    paddingBottom: 60,
     position: 'absolute',
     zIndex: 1,
   },  
   separator: {
-    height: 10,
+    height: 5,
   },
 });
 
@@ -34,9 +34,9 @@ const WhiskyInfo = ({ whisky, id }) => {
 
 const SingleWhisky = () => {
 
-  const history = useHistory();
   const [reviews, setReviews] = useState('');
   const [whisky, setWhisky] = useState('');
+
 
   const { id } = useParams();
 
@@ -69,7 +69,7 @@ const SingleWhisky = () => {
       .catch((error) => {
         console.log("Error getting document: ", error);
       });
-}, [history]);
+},[id]);
 
 
 

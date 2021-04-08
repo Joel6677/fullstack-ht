@@ -5,7 +5,6 @@ import { Searchbar, Divider } from 'react-native-paper';
 import { useDebounce } from 'use-debounce';
 
 import WhiskyItem from './WhiskyItem';
-// import useRepositories from '../hooks/useRepositories';
 import Picker from './Picker';
 import * as firebase from 'firebase';
 
@@ -124,7 +123,7 @@ export class WhiskyListContainer extends React.Component {
     }
 }
 
-const WhiskyList = () => {
+const Users = () => {
     const history = useHistory();
     const [orderBy, setOrderBy] = useState('latest');
     const [searchKeyword, setSearchKeyword] = useState('');
@@ -171,4 +170,4 @@ const WhiskyList = () => {
     );
 };
 
-export default WhiskyList;
+export default Users;

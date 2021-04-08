@@ -2,7 +2,6 @@ import React, { useState, useEffect } from 'react';
 import { StyleSheet, View, Image, ActivityIndicator, } from 'react-native';
 import { Button, Avatar, Divider } from 'react-native-paper';
 import { useHistory } from 'react-router-native';
-import {GET_IMAGE} from '../firebase/queries';
 
 import { StateContext } from '../state';
 import Text from './Text';
@@ -24,14 +23,14 @@ const styles = StyleSheet.create({
     zIndex: 1
   },
   container: {
-    flexDirection: 'row',
+    // flexDirection: 'row',
     alignItems: 'center',
   }, 
   bottomContainer: {
     
   },
   avatar: {
-    marginBottom: 40,
+    marginBottom: 50,
     width: 150, 
     height: 150,
     borderRadius: 100
@@ -67,7 +66,7 @@ const Userpage = () => {
       setImg(snapshot.data().downloadURL);
     });
   
-  });
+  },[history]);
 
   const linkTo = (link) => {
     history.push(link);
@@ -81,19 +80,27 @@ const Userpage = () => {
       </View>
       <Image source={{ uri: img }} style={styles.avatar} onLoadEnd={() => setLoaded(true)} defaultSource={''}/>
       <View style={styles.container}>
-        <Button icon="settings-outline" mode="outlined" compact="true" style={styles.button} onPress={() => linkTo('my-reviews')}>
+        <Button icon="star" mode="outlined" compact="true" style={styles.button} onPress={() => linkTo('my-reviews')}>
          My reviews
           </Button>
 
-        <Button icon="lead-pencil" mode="outlined" compact="true" style={styles.button} onPress={() => linkTo('my-info')}>
+        <Button icon="information" mode="outlined" compact="true" style={styles.button} onPress={() => linkTo('my-info')}>
           My info
           </Button>
+        
+          <Button icon="database" mode="outlined" compact="true" style={styles.button} onPress={() => linkTo('my-info')}>
+          My collection
+          </Button>
 
-      </View>
-      <View style={styles.bottomContainer}>
-        <Button icon="camera" mode="outlined" compact="true" style={styles.button2} onPress={() => linkTo('/upload-media')}>
-          Upload media
-        </Button>
+          <Button icon="glass-tulip" mode="outlined" compact="true" style={styles.button} onPress={() => linkTo('my-info')}>
+          My wish List
+          </Button>
+
+
+          <Button icon="glass-tulip" mode="outlined" compact="true" style={styles.button} onPress={() => linkTo('my-media')}>
+          My media
+          </Button>
+
       </View>
       </View>
 

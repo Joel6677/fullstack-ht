@@ -4,24 +4,31 @@ import Text from './Text';
 import formatInThousands from '../utils/formatInThousands';
 
 const styles = StyleSheet.create({
+  backgroundCountainer: {
+    backgroundColor: 'orange'
+  },
   container: {
     padding: 5,
+    width: '100%',
     flexDirection: 'row',
+    backgroundColor: 'yellow'
   },
   contentContainer: {
+    width: '70%',
     flexGrow: 1,
+
     backgroundColor: 'green'
   },
   middleContainer: {
-    // alignItems: 'center',
+    alignItems: 'center',
     flexGrow: 0,
-    backgroundColor: 'brown'
+    // backgroundColor: 'brown'
 
   },
   bottomContainer: {
     flexGrow: 0,
-    backgroundColor: 'blue',
-    // justifyContent: 'space-around',
+    // backgroundColor: 'blue',
+    justifyContent: 'space-between',
     flexDirection: 'row',
   },
   avatarContainer: {
@@ -61,7 +68,7 @@ const CountItem = ({ label, count, ...props }) => {
   );
 };
 
-const WhiskyItem = ({ whisky, ...props }) => {
+const WhiskyItem = ({ whisky }) => {
   const {
     brand,
     nameAddition,
@@ -72,14 +79,17 @@ const WhiskyItem = ({ whisky, ...props }) => {
     bottleSize,
     downloadURL,
     reviewCount,
-    ratingAverage,
+    rating,
     bottler,
   } = whisky;
 
 
 
   return (
-    <View style={styles.container} {...props}>
+    <View style={styles.backgroundCountainer}>
+
+
+    <View style={styles.container}>
       
         <View style={styles.avatarContainer}>
           <Image source={{ uri: downloadURL}} style={styles.avatar} />
@@ -90,10 +100,12 @@ const WhiskyItem = ({ whisky, ...props }) => {
             style={styles.nameText}
             testID="whiskyItemName"
             fontSize='subheading'
-            // fontWeight='bold'
+            fontWeight='bold'
+            numberOfLines={3}
           >
-            {brand+' '}{age+' '}{distillationDate+'/'}{bottlingDate+' '}
-            {nameAddition+' '}{abv+'% '}{bottleSize+'L'}
+            {brand && brand + ' '}{age && age + ' '}{distillationDate && 
+            distillationDate+'/'}{bottlingDate && bottlingDate + ' '}
+            {nameAddition&& nameAddition+' '}{abv && abv+'% '}{bottleSize && bottleSize+'L'}
           </Text>
         </View>
         <View style={styles.middleContainer}>
@@ -107,7 +119,7 @@ const WhiskyItem = ({ whisky, ...props }) => {
         </View>
         <View style={styles.bottomContainer}>
         <CountItem
-          count={ratingAverage}
+          count={rating}
           label="Rating"
           testID="repositoryItemRating"
         />
@@ -119,6 +131,7 @@ const WhiskyItem = ({ whisky, ...props }) => {
       </View>
       </View>
 
+    </View>
     </View>
   );
 };

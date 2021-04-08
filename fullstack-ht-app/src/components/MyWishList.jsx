@@ -1,19 +1,13 @@
 import React , {useState, useEffect} from 'react';
 import { FlatList, View, StyleSheet, Alert } from 'react-native';
-import { Button, Snackbar } from 'react-native-paper';
+import { Button, Snackbar } from 'react-native-paper';
 import { Link } from 'react-router-native';
 import * as firebase from 'firebase';
-import ReviewItem from './ReviewItem';
+import WhiskyItem from './WhiskyItem';
 
 
 const styles = StyleSheet.create({
-container: {
-    zIndex: 1,
-    position: 'absolute',
-    height: '100%',
-    width: '100%',
-},
-  reviewItemWrapper: {
+  WishListItemWrapper: {
     padding: 15,
     backgroundColor: 'orange',
   },
@@ -33,7 +27,7 @@ container: {
   },
 });
 
-const DeleteReviewButton = ({ onPress, ...props }) => {
+const DeleteWishListButton = ({ onPress }) => {
     const alertButtons = [
       {
         text: 'Cancel',
@@ -63,19 +57,19 @@ const DeleteReviewButton = ({ onPress, ...props }) => {
 
 
 
-const ReviewItemWithActions = ({ review, onDelete }) => {
+const WishListItemWithActions = ({ whisky, onDelete }) => {
 
   return (
-    <View style={styles.reviewItemWrapper}>
-        <ReviewItem review={review}/> 
+    <View style={styles.WishListItemWrapper}>
+        <WhiskyItem whisky={whisky}/> 
         <Link
           component={Button}
-          to={`/whiskies/${review.whiskyID}`}
+          to={`/whiskies/${whisky.whiskyID}`}
           style={styles.actionButton}
         >
           View whisky
         </Link>
-        <DeleteReviewButton
+        <DeleteWishListButton
           onPress={onDelete}
           style={[styles.actionButton, styles.lastActionButton]}
         /> 
@@ -85,9 +79,9 @@ const ReviewItemWithActions = ({ review, onDelete }) => {
 
 const ItemSeparator = () => <View style={styles.separator} />;
 
-const MyReviews = () => {
+const MyWishList = () => {
 
-    const [reviews, setReviews] = useState([]);
+    const [myWishList, setMyWishList] = useState([]);
     const [visible, setVisible] = useState(false);
   
     useEffect(() => {
@@ -100,7 +94,7 @@ const MyReviews = () => {
                     const id = doc.id;
                     return { id, ...data };
                 });
-                setReviews(posts);
+                setMyWishList(posts);
             })
             .catch((error) => {
                 console.log("Error getting documents: ", error);
@@ -114,28 +108,24 @@ const MyReviews = () => {
     
   };
 
-  console.log('reviews: ', reviews);
-
   return (
       <>
-      <View style={styles.container}>
-      <Snackbar visible={visible}>
+        <Snackbar visible={visible}>
             Review deleted
         </Snackbar>
           <FlatList
-              data={reviews}
+              data={myWishList}
               renderItem={({ item }) => (
-                  <ReviewItemWithActions
-                      review={item}
+                  <WishListItemWithActions
+                      whisky={item}
                       onDelete={() => onDelete(item.id)}
                   />
               )}
               keyExtractor={({ id }) => id}
               ItemSeparatorComponent={ItemSeparator}
           />
-      </View>
       </>
   );
 };
 
-export default MyReviews;
+export default MyWishList;

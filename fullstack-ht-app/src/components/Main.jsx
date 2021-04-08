@@ -22,6 +22,7 @@ import UploadWhisky from './UploadWhisky';
 import WhiskyList from './WhiskyList';
 import SingleWhisky from './SingleWhisky';
 import CreateReview from './CreateReview';
+// import MyMedia from './MyMedia';
 
 const styles = StyleSheet.create({
   container: {
@@ -67,6 +68,9 @@ const Main = () => {
         <Route path='/my-info' exact>
           <MyInfo/>
         </Route>
+        {/* <Route path='/my-media' exact>
+          <MyMedia/>
+        </Route> */}
         <Route path='/sign-in' exact>
           <SignIn/>
         </Route>

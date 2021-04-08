@@ -1,16 +1,13 @@
 import React from 'react';
 import { NativeRouter } from 'react-router-native';
-import { ApolloProvider } from '@apollo/react-hooks';
 
 import Main from './src/components/Main';
-import createApolloClient from './src/utils/apolloClient';
 import AuthStorage from './src/utils/authStorage';
 import AuthStorageContext from './src/contexts/AuthStorageContext';
 import { StateProvider } from "./src/state";
 import firebase from "firebase/app";
 
 const authStorage = new AuthStorage();
-const apolloClient = createApolloClient(authStorage);
 
 const firebaseConfig = {
   apiKey: "AIzaSyDkW-jIpPtfIi7gvbaTyWVw3GKWZR2GF00",
@@ -30,13 +27,11 @@ firebase.initializeApp(firebaseConfig);
 const App = () => {
   return (
     <NativeRouter>
-      <ApolloProvider client={apolloClient}>
         <AuthStorageContext.Provider value={authStorage}>
           <StateProvider>
             <Main />
           </StateProvider>
         </AuthStorageContext.Provider>
-      </ApolloProvider>
     </NativeRouter>
   );
 };

@@ -1,13 +1,15 @@
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import { StyleSheet, View } from 'react-native';
-import {Button} from 'react-native-paper';
+import { Button} from 'react-native-paper';
 import { Formik } from 'formik';
 import * as yup from 'yup';
 import { useHistory } from 'react-router-native';
 import * as firebase from 'firebase';
 import FormikTextInput from './FormikTextInput';
 import { useParams } from 'react-router-native';
+import Text from './Text';
 import Moment from 'moment';
+
 
 const styles = StyleSheet.create({
   container: {
@@ -20,6 +22,10 @@ const styles = StyleSheet.create({
   fieldContainer: {
     marginBottom: 15,
   },
+  headingContainer: {
+    alignItems: 'center',
+    marginBottom: 30
+  }
 });
 
 const initialValues = {
@@ -65,7 +71,7 @@ const CreateReviewForm = ({ onSubmit }) => {
         <FormikTextInput placeholder="Comment" name="comment" multiline />
       </View>
 
-      <Button onPress={onSubmit}>Create a review</Button>
+      <Button mode={'outlined'} onPress={onSubmit}>Create a review</Button>
     </View>
   );
 };
@@ -77,21 +83,21 @@ const CreateReview = () => {
   const [name, setName] = useState();
   const [imgURL, setImgURL] = useState();
 
-  console.log('imgURL ', imgURL);
+  useEffect(() => {
+    firebase.firestore().collection('images').doc(firebase.auth().currentUser.uid).collection('userImages').doc('profilePicture')
+    .get().then((doc) => {setImgURL(doc.data().downloadURL);});
+
+    firebase.firestore().collection('userinfo').doc(firebase.auth().currentUser.uid)
+    .get().then((doc) => {setName(doc.data().name);});
+  }, [id]);
 
   const onSubmit = async (values) => {
 
     const { nosing, taste, finish, rating, comment } = values;
 
 
-    firebase.firestore().collection('userinfo').doc(firebase.auth().currentUser.uid)
-    .get().then((doc) => {setName(doc.data().name);});
-
-    firebase.firestore().collection('images').doc(firebase.auth().currentUser.uid).collection('userImages').doc('profilePicture')
-    .get().then((doc) => {setImgURL(doc.data().downloadURL);});
-
-    firebase.firestore().collection('whiskies').doc(id).collection('reviews')
-      .add({
+    {firebase.auth().currentUser&&firebase.firestore().collection('whiskies').doc(id).collection('reviews').doc(firebase.auth().currentUser.uid)
+      .set({
         name: name,
         imgURL: imgURL,
         nosing: nosing,
@@ -102,14 +108,34 @@ const CreateReview = () => {
         time: Moment(new Date()).calendar()
       }).catch((error) => {
         console.log('Error: ', error);
-      });
+      });}
+
+    
+      {firebase.auth().currentUser&&firebase.firestore().collection('reviews').doc(
+        firebase.auth().currentUser.uid).collection('userReviews').doc(id)
+      .set({
+        name: name,
+        imgURL: imgURL,
+        nosing: nosing,
+        taste: taste,
+        finish: finish,
+        rating: rating,
+        comment: comment,
+        time: Moment(new Date()).calendar()
+      }).catch((error) => {
+        console.log('Error: ', error);
+      });}
+      
 
     firebase.firestore().collection('whiskies').doc(id).get().
       then((doc) => {
-        console.log('doc: ', doc.data());
-        firebase.firestore.collection('whiskies').doc(id).update({
-          reviewCount: doc.data().reviewCount + 1,
-          ratingAverage: (doc.data().ratingAverage + rating) / doc.data().reviewCount + 1
+        console.log('rating', doc.data().rating);
+        console.log('rating got: ', rating);
+        console.log('reviewCount: ', doc.data().reviewCount);
+        console.log('average rating: ', (parseInt(doc.data().rating) + parseInt(rating)) / parseInt(doc.data().reviewCount + 1));
+        firebase.firestore().collection('whiskies').doc(id).update({
+          "reviewCount": doc.data().reviewCount + 1,
+          "rating": (parseInt(doc.data().rating) + parseInt(rating)) / parseInt(doc.data().reviewCount + 1)
         });
       }).catch((error) => {
         console.log("Error: ", error);
@@ -123,6 +149,9 @@ const CreateReview = () => {
 
   return (
     <View style={styles.container}>
+      <View style={styles.headingContainer}>
+      <Text color={'primary'} fontSize={'heading'} fontWeight={'bold'}>Create review</Text>
+      </View>
       <Formik
         initialValues={initialValues}
         onSubmit={onSubmit}

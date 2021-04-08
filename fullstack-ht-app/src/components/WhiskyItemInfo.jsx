@@ -1,10 +1,11 @@
-import React from 'react';
-import { View, Image, StyleSheet } from 'react-native';
+import React, { useEffect } from 'react';
+import { View, Image, StyleSheet, Alert } from 'react-native';
 import { Divider, Avatar, Button } from 'react-native-paper';
 import { useHistory } from 'react-router-native';
 import theme from '../theme';
 import Text from './Text';
 import formatInThousands from '../utils/formatInThousands';
+import { addToWishList, addToCollection } from '../firebase/uploads';
 
 const styles = StyleSheet.create({
     container: {
@@ -13,7 +14,7 @@ const styles = StyleSheet.create({
     headingContainer: {
         flexDirection: 'row',
         alignSelf: 'center',
-        marginBottom: 15
+        marginBottom: 5
     },
     topContainer: {
         flexDirection: 'column',
@@ -25,17 +26,17 @@ const styles = StyleSheet.create({
         marginBottom: 15
     },
     descriptionContainer: {
+        width: '60%'
 
     },
     bottomContainer: {
         flexDirection: 'row',
         justifyContent: 'space-around',
         paddingVertical: 10
-
     },
     avatarContainer: {
         flexGrow: 0,
-        marginRight: 20
+        marginRight: 10
     },
     avatarIconContainer: {
         flexGrow: 0,
@@ -54,8 +55,11 @@ const styles = StyleSheet.create({
     descriptionText: {
         flexGrow: 1,
     },
+    allButtonsContainer: {
+        padding: 3,
+    },
     buttonContainer: {
-        marginTop: 5,
+        marginVertical: 3,
     },
     avatar: {
         width: 120,
@@ -100,7 +104,7 @@ const WhiskyItemInfo = ({ whisky, id }) => {
         category,
         age,
         abv,
-        bottlesize,
+        bottleSize,
         bottler,
         series,
         description,
@@ -113,10 +117,28 @@ const WhiskyItemInfo = ({ whisky, id }) => {
         chillFiltration,
         downloadURL,
         reviewCount,
-        ratingAverage
+        rating
     } = whisky;
 
     const history = useHistory();
+
+
+    const addWhiskyToMyCollection = () => {
+        addToCollection(id);
+        Alert.alert(
+            "Whisky added to my collection"
+          );
+    };
+
+    const addWhiskyToMyWishList = () => {
+        addToWishList(id);
+        Alert.alert(
+            "Whisky added to my wish list"
+          );
+    };
+    
+
+    
 
     return (
         <View style={styles.container}>
@@ -127,64 +149,11 @@ const WhiskyItemInfo = ({ whisky, id }) => {
                         style={styles.headingText}
                         fontWeight="bold"
                         fontSize="heading"
-                        numberOfLines={1}
-                        testID="whiskyItemBrand"
+                        numberOfLines={4}
+                        testID="whiskyItemInfoHeading"
                     >
-                        {brand}
-                    </Text>
-                    {!!age && <Text
-                        style={styles.headingText}
-                        color="textSecondary"
-                        fontWeight="bold"
-                        fontSize="heading"
-                        testID="whiksyItemAge"
-                    >
-                        {' '}{age} YO{' '}
-                    </Text>}
-                    {!!distillationDate && <Text
-                        style={styles.headingText}
-                        fontWeight="bold"
-                        fontSize="heading"
-                        color="textSecondary"
-                        testID="whiksyItemDistillationDate"
-                    >
-                        {distillationDate}{'/'}
-                    </Text>}
-                    {!!bottlingDate && <Text
-                        style={styles.headingText}
-                        fontWeight="bold"
-                        fontSize="heading"
-                        color="textSecondary"
-                        testID="whiksyItemBottlingDate"
-                    >
-                        {bottlingDate}{' '}
-                    </Text>}
-                    {!!nameAddition && <Text
-                        style={styles.headingText}
-                        fontWeight="bold"
-                        fontSize="heading"
-                        color="textSecondary"
-                        testID="whiksyItemBottlingDate"
-                    >
-                        {nameAddition}{' '}
-                    </Text>}
-                    <Text
-                        style={styles.headingText}
-                        fontWeight="bold"
-                        fontSize="heading"
-                        color="textSecondary"
-                        testID="whiskyItemAbv"
-                    >
-                        {abv}%{' '}
-                    </Text>
-                    <Text
-                        style={styles.headingText}
-                        fontWeight="bold"
-                        fontSize="heading"
-                        color="textSecondary"
-                        testID="whiskyItemBottlesize"
-                    >
-                        {bottlesize}L
+                        {brand + ' '}{age + ' YO '}{distillationDate +'/'}
+                        {bottlingDate+' '}{nameAddition +' '}{abv+'% '}{bottleSize+'L'}
                     </Text>
                 </View>
                 <View style={styles.middleContainer}>
@@ -196,7 +165,7 @@ const WhiskyItemInfo = ({ whisky, id }) => {
                         <Text
                             style={styles.descriptionTextText}
                             fontSize="subheading"
-                            numberOfLines={1}
+                            numberOfLines={10}
                             testID="whiskyItemDistillery"
                         >
                             {description}
@@ -233,13 +202,27 @@ const WhiskyItemInfo = ({ whisky, id }) => {
                     >
                         Category: {category}
                     </Text>
-                    <Text
+                    {!!age&&<Text
                         style={styles.headingText}
                         fontSize="subheading"
                         testID="whiskyItemAge"
                     >
                         Age: {age}
-                    </Text>
+                    </Text>}
+                    {!!distillationDate&&<Text
+                        style={styles.headingText}
+                        fontSize="subheading"
+                        testID="whiskyItemDistillationDate"
+                    >
+                        Distillation date: {distillationDate}
+                    </Text>}
+                    {!!bottlingDate&&<Text
+                        style={styles.headingText}
+                        fontSize="subheading"
+                        testID="whiskyItemBottlingDate"
+                    >
+                        Bottling date: {bottlingDate}
+                    </Text>}
                     <Text
                         style={styles.headingText}
                         fontSize="subheading"
@@ -252,7 +235,7 @@ const WhiskyItemInfo = ({ whisky, id }) => {
                         fontSize="subheading"
                         testID="whiskyItemBottlesize"
                     >
-                        Bottle size: {bottlesize}L
+                        Bottle size: {bottleSize}L
                 </Text>
                     {!!bottler && <Text
                         style={styles.headingText}
@@ -314,12 +297,18 @@ const WhiskyItemInfo = ({ whisky, id }) => {
                     testID="whiskyItemReviews"
                 />
                 <CountItem
-                    count={ratingAverage}
+                    count={rating}
                     label="Rating"
                     testID="whiskyItemRating"
                 />
             </View>
-            <Button style={styles.buttonContainer} mode="outlined" onPress={() => { history.push(`/create-review/${id}`); }}>Create review</Button>
+            <Divider/>
+            <View style={styles.allButtonsContainer}>
+                <Button style={styles.buttonContainer} mode="outlined" onPress={() => { addWhiskyToMyCollection; }}>Add to collection</Button>
+                <Button style={styles.buttonContainer} mode="outlined" onPress={() => { addWhiskyToMyWishList; }}>Add to wishlist</Button>
+                <Button style={styles.buttonContainer} mode="outlined" onPress={() => { history.push(`/create-review/${id}`); }}>Create review</Button>
+            </View>
+            
         </View>
     );
 };
