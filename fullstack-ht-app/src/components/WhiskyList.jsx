@@ -2,12 +2,12 @@ import React, { useState, useEffect } from 'react';
 import { FlatList, View, StyleSheet, TouchableOpacity } from 'react-native';
 import { useHistory } from 'react-router-native';
 import { Searchbar, Divider } from 'react-native-paper';
-import { useDebounce } from 'use-debounce';
-
 import WhiskyItem from './WhiskyItem';
-// import useRepositories from '../hooks/useRepositories';
 import Picker from './Picker';
-import * as firebase from 'firebase';
+// import * as firebase from 'firebase';
+import firebase from "firebase/app";
+import "firebase/auth";
+import "firebase/firestore";
 
 const styles = StyleSheet.create({
     container: {
@@ -16,7 +16,7 @@ const styles = StyleSheet.create({
         width: '100%',
         position: 'absolute',
         zIndex: 1,
-        paddingTop: 80,
+        paddingTop: 90,
         paddingBottom: 60
     },
     separator: {
@@ -53,54 +53,58 @@ const orderByOptions = [
     },
 ];
 
-// const WhiskyListHeader = (
-//     {
-//       onOrderByChange,
-//       orderBy,
-//       searchKeyword,
-//       onSearchKeywordChange,
-//     }
-// ) => {
-//     return (
-//         <View style={styles.headerContainer}>
-//             <View style={styles.searchContainer}>
-//                 <Searchbar
-//                   placeholder="Search whiskies"
-//                   value={searchKeyword}
-//                   onChangeText={onSearchKeywordChange}
-//                 />
-//             </View>
-//             <Picker
-//             placeholder={{}}
-//             onValueChange={onOrderByChange}
-//             value={orderBy}
-//             items={orderByOptions}
-//             />
-//         </View>
-//     );
-// };
+const variablesByOrderBy = {
+    latest: {
+      orderBy: 'created_at',
+      orderDirection: 'desc',
+    },
+    highestRating: {
+      orderBy: 'rating',
+      orderDirection: 'desc',
+    },
+    lowestRating: {
+      orderBy: 'rating',
+      orderDirection: 'asc',
+    },
+  };
+  
+
+const WhiskyListHeader = (
+    {
+      onOrderByChange,
+      orderBy,
+
+    }
+) => {
+    return (
+        <View style={styles.headerContainer}>
+            <Picker
+            placeholder={{}}
+            onValueChange={onOrderByChange}
+            value={orderBy}
+            items={orderByOptions}
+            />
+        </View>
+    );
+};
 
 export class WhiskyListContainer extends React.Component {
-    // renderHeader = () => {
-    //     const {
-    //         onOrderByChange,
-    //         orderBy,
-    //         searchKeyword,
-    //         onSearchKeywordChange,
-    //     } = this.props;
+    renderHeader = () => {
+        const {
+            onOrderByChange,
+            orderBy,
+        } = this.props;
 
-    //     return (
-    //         <WhiskyListHeader
-    //             onOrderByChange={onOrderByChange}
-    //             orderBy={orderBy}
-    //             searchKeyword={searchKeyword}
-    //             onSearchKeywordChange={onSearchKeywordChange}
-    //         />
-    //     );
-    // };
+        return (
+            <WhiskyListHeader
+                onOrderByChange={onOrderByChange}
+                orderBy={orderBy}
+            />
+        );
+    };
 
     render() {
-        const { whiskies, onEndReach, onWhiskyPress } = this.props;
+        const { whiskies, onWhiskyPress } = this.props;
 
         return (
             <FlatList
@@ -115,10 +119,7 @@ export class WhiskyListContainer extends React.Component {
                     </TouchableOpacity>
                 )}
                 ItemSeparatorComponent={ItemSeparator}
-                // ListHeaderComponent={this.renderHeader}
-                // onEndReached={onEndReach}
-                // onEndReachedThreshold={0.5}
-                // initialNumToRender={8}
+                ListHeaderComponent={this.renderHeader}
             />
         );
     }
@@ -127,12 +128,17 @@ export class WhiskyListContainer extends React.Component {
 const WhiskyList = () => {
     const history = useHistory();
     const [orderBy, setOrderBy] = useState('latest');
-    const [searchKeyword, setSearchKeyword] = useState('');
     const [whiskies, setWhiskies] = useState('');
 
+    const [searchQuery, setSearchQuery] = useState('');
+    const onChangeSearch = query => setSearchQuery(query);
+    
     useEffect(() => {
-        firebase.firestore()
+        if (searchQuery !== '') {
+            firebase.firestore()
             .collection('whiskies')
+            .where('brand', '==', searchQuery)
+            .orderBy(`${variablesByOrderBy[orderBy].orderBy}`, `${variablesByOrderBy[orderBy].orderDirection}`)
             .get()
             .then((querySnapshot) => {
                 let posts = querySnapshot.docs.map(doc => {
@@ -145,24 +151,45 @@ const WhiskyList = () => {
             .catch((error) => {
                 console.log("Error getting documents: ", error);
             });
-    }, [history]);
-    // const [debouncedSearchKeyword] = useDebounce(searchKeyword, 500);
+        } else {
+            firebase.firestore()
+            .collection('whiskies')
+            .orderBy(`${variablesByOrderBy[orderBy].orderBy}`, `${variablesByOrderBy[orderBy].orderDirection}`)
+            .get()
+            .then((querySnapshot) => {
+                let posts = querySnapshot.docs.map(doc => {
+                    const data = doc.data();
+                    const id = doc.id;
+                    return { id, ...data };
+                });
+                setWhiskies(posts);
+            })
+            .catch((error) => {
+                console.log("Error getting documents: ", error);
+            });
+        }
 
-    //   const onEndReach = () => {
-        //fetch more
-    //   };
+    }, [searchQuery, orderBy]);
+    
+
     
     return (
         <View style={styles.container}>
+            <View style={styles.searchContainer}>
+                <Searchbar
+                    placeholder="Search"
+                    onChangeText={onChangeSearch}
+                    value={searchQuery}
+                />
+            </View>
+
+            
             <WhiskyListContainer
                 whiskies={whiskies}
-                // orderBy={orderBy}
-                // onOrderByChange={(newOrderBy) => {
-                //     setOrderBy(newOrderBy);
-                // }}
-                // onEndReach={onEndReach}
-                // searchKeyword={searchKeyword}
-                // onSearchKeywordChange={(keyword) => setSearchKeyword(keyword)}
+                orderBy={orderBy}
+                onOrderByChange={(newOrderBy) => {
+                    setOrderBy(newOrderBy);
+                }}
                 onWhiskyPress={(id) => {
                     history.push(`/whiskies/${id}`);
                 }}

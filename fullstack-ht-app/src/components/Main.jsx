@@ -22,6 +22,12 @@ import UploadWhisky from './UploadWhisky';
 import WhiskyList from './WhiskyList';
 import SingleWhisky from './SingleWhisky';
 import CreateReview from './CreateReview';
+import MyMessages from './MyMessages';
+import Messenger from './Messenger';
+import UserList from './UserList';
+import MyWishList from './MyWishList';
+import MyCollection from './MyCollection';
+import ScanWhisky from './ScanWhisky';
 // import MyMedia from './MyMedia';
 
 const styles = StyleSheet.create({
@@ -68,9 +74,9 @@ const Main = () => {
         <Route path='/my-info' exact>
           <MyInfo/>
         </Route>
-        {/* <Route path='/my-media' exact>
-          <MyMedia/>
-        </Route> */}
+        <Route path='/myMessages' exact>
+          <MyMessages />
+        </Route>
         <Route path='/sign-in' exact>
           <SignIn/>
         </Route>
@@ -88,6 +94,21 @@ const Main = () => {
         </Route>
         <Route path="/create-review/:id" exact>
           <CreateReview />
+        </Route>
+        <Route path="/userlist" exact>
+          <UserList />
+        </Route>
+        <Route path="/my-collection" exact>
+          <MyCollection />
+        </Route>
+        <Route path="/my-wishList" exact>
+          <MyWishList />
+        </Route>
+        <Route path="/messenger/:id" exact>
+          <Messenger />
+        </Route>
+        <Route path="/scan-whisky" exact>
+          <ScanWhisky/>
         </Route>
         <Redirect to="/" />
       </Switch>

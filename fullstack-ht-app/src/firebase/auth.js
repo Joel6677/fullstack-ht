@@ -51,8 +51,8 @@ export const SignUpWithEmail = async (email, password) => {
 };
 
 
-export const SignInWithEmail = async (email, password) => {
-    await firebase.auth().signInWithEmailAndPassword(email, password);
+export const SignInWithEmail = (email, password) => {
+    firebase.auth().signInWithEmailAndPassword(email, password);
 };
 
 export const SignInWithGoogle = async () => {

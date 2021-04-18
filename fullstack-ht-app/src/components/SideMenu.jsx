@@ -1,19 +1,21 @@
 import React, { useContext, useEffect, useRef, useState } from 'react';
 import { Animated, StyleSheet, View, Dimensions, Image } from 'react-native';
-import { Button, Divider, Drawer } from 'react-native-paper';
+import { Button, Divider, Drawer, useTheme } from 'react-native-paper';
 import { useHistory } from 'react-router-native';
 import Text from './Text';
 
 import { StateContext } from '../state';
 import CustomButton from './CustomButton';
-import theme from '../theme';
-import * as firebase from 'firebase';
+// import * as firebase from 'firebase';
+import firebase from "firebase/app";
+import "firebase/auth";
+import "firebase/firestore";
 
 const styles = StyleSheet.create({ 
   sidebar: {
     width: Dimensions.get('window').width*0.85,
     height: '100%', 
-    backgroundColor: theme.colors.primary,
+    // backgroundColor: theme.colors.primary,
     zIndex: 4,
     position: 'absolute'
   },
@@ -24,7 +26,7 @@ const styles = StyleSheet.create({
     alignItems: 'center'
   },  
   nameText: {
-    marginRight: 10
+    marginRight: 10,
   },
   buttonContainer: {
     width: '100%',
@@ -67,6 +69,7 @@ const SideMenu = () => {
   const history = useHistory();
   const [img, setImg] = useState('');
   const [username, setUsername] = useState('');
+  const {colors} = useTheme();
 
   const route = (route, number) => {
       
@@ -126,7 +129,7 @@ const SideMenu = () => {
 
   return (
     <>
-      <Animated.View style={[styles.sidebar, {
+      <Animated.View style={[styles.sidebar, {backgroundColor: colors.primary}, {
         transform: [{
           translateX: toggleAnim
         }]
@@ -135,14 +138,14 @@ const SideMenu = () => {
 
         {firebase.auth().currentUser&&<View style={styles.topContainer}>
         <Image source={{ uri: img }} style={styles.avatar} />
-        <Text style={styles.nameText} fontSize={'subheading'}>
+        <Text style={styles.nameText} fontSize={'subheading'} color={'textSecondary'}>
           {username} logged in
         </Text>
         </View>}
 
         <View style={styles.buttonContainer}>
-            {!firebase.auth().currentUser&&<Button style={styles.button} mode='outlined' onPress={()=>route('sign-up')}>Sign up</Button>}
-            {!firebase.auth().currentUser&&<Button style={styles.button} mode='outlined' onPress={()=>route('/sign-in-email')}>Sign in</Button>}
+            {!firebase.auth().currentUser&&<Button style={styles.button} raised theme={{colors: {primary: '#FFFFFF'} }} mode='outlined' onPress={()=>route('sign-up')}>Sign up</Button>}
+            {!firebase.auth().currentUser&&<Button style={styles.button} raised theme={{colors: {primary: '#FFFFFF'} }} mode='outlined' onPress={()=>route('/sign-in-email')}>Sign in</Button>}
         </View>
          
 
@@ -153,14 +156,16 @@ const SideMenu = () => {
               label="Upload new whisky"
               active={active === 'first'}
               onPress={() => route('/upload-whisky', 'first')}
+              raised theme={{colors: {text: '#FFFFFF', primary: '#FFFFFF'} }}
             />
           </Drawer.Section>
-          <Drawer.Section style={styles.drawerSection}>
+          <Drawer.Section style={styles.drawerSection, {}}>
             <Drawer.Item
               icon="glass-tulip"
               label="Collections"
               active={active === 'second'}
               onPress={() => route('/collections', 'second')}
+              raised theme={{colors: {text: '#FFFFFF', primary: '#FFFFFF'} }}
             />
           </Drawer.Section>
           <Drawer.Section style={styles.drawerSection}>
@@ -169,6 +174,7 @@ const SideMenu = () => {
               label="Profile"
               active={active === 'third'}
               onPress={() => route('/userpage','third')}
+              raised theme={{colors: {text: '#FFFFFF', primary: '#FFFFFF'} }}
             />
           </Drawer.Section>
           <Drawer.Section style={styles.drawerSection}>
@@ -176,7 +182,8 @@ const SideMenu = () => {
               icon="account-multiple"
               label="Users"
               active={active === 'fourth'}
-              onPress={() => route('/users','fourth')}
+              onPress={() => route('/userlist','fourth')}
+              raised theme={{colors: {text: '#FFFFFF', primary: '#FFFFFF'} }}
             />
           </Drawer.Section>
           <Drawer.Section style={styles.drawerSection}>
@@ -185,6 +192,7 @@ const SideMenu = () => {
               label="Posts"
               active={active === 'fifth'}
               onPress={() => route('/posts','fifth')}
+              raised theme={{colors: {text: '#FFFFFF', primary: '#FFFFFF'} }}
             />
           </Drawer.Section>
 
@@ -194,6 +202,7 @@ const SideMenu = () => {
               label="Upload post"
               active={active === 'sixdth'}
               onPress={() => route('/upload-post','sixdth')}
+              raised theme={{colors: {text: '#FFFFFF', primary: '#FFFFFF'} }}
             />
           </Drawer.Section>
           

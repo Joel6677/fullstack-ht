@@ -4,9 +4,8 @@ const theme = {
   roundness: 30,
   colors: {
     textPrimary: '#24292e',
-    textSecondary: '#586069',
-    primary: 'darkorchid',
-    appBarBackground: '#24292e',
+    textSecondary: '#FFFFFF',
+    primary: '#334b8b',
     mainBackground: 'white',
     error: '#d73a4a',
     divider: '#d1d5da',

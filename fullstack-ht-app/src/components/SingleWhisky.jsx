@@ -5,7 +5,10 @@ import { FlatList, StyleSheet, View } from 'react-native';
 
 import WhiskyItemInfo from './WhiskyItemInfo';
 import ReviewItem from './ReviewItem';
-import * as firebase from 'firebase';
+// import * as firebase from 'firebase';
+import firebase from "firebase/app";
+import "firebase/auth";
+import "firebase/firestore";
 
 const styles = StyleSheet.create({
   container: {
@@ -36,7 +39,6 @@ const SingleWhisky = () => {
 
   const [reviews, setReviews] = useState('');
   const [whisky, setWhisky] = useState('');
-
 
   const { id } = useParams();
 

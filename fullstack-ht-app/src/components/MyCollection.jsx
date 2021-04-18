@@ -2,14 +2,27 @@ import React , {useState, useEffect} from 'react';
 import { FlatList, View, StyleSheet, Alert } from 'react-native';
 import { Button, Snackbar } from 'react-native-paper';
 import { Link } from 'react-router-native';
-import * as firebase from 'firebase';
+// import * as firebase from 'firebase';
+
+import firebase from "firebase/app";
+import "firebase/auth";
+import "firebase/firestore";
 import WhiskyItem from './WhiskyItem';
 
 
 const styles = StyleSheet.create({
+  container: {
+    flexDirection: 'column',
+    zIndex: 1,
+    // position: 'absolute',
+    height: '100%',
+    width: '100%',
+    // paddingTop: 80,
+    paddingBottom: 60
+},
   CollectionItemWrapper: {
     padding: 15,
-    backgroundColor: 'orange',
+    backgroundColor: '#FFD700',
   },
   separator: {
     height: 10,
@@ -49,8 +62,8 @@ const DeleteCollectionButton = ({ onPress }) => {
     };
   
     return (
-      <Button onPress={deleteWithConfirmation} mode='outlined'>
-        Delete review
+      <Button onPress={deleteWithConfirmation}>
+        Delete whisky
       </Button>
     );
   };
@@ -58,6 +71,8 @@ const DeleteCollectionButton = ({ onPress }) => {
 
 
 const CollectionItemWithActions = ({ whisky, onDelete }) => {
+
+  console.log('whiskyID: ', whisky.whiskyID);
 
   return (
     <View style={styles.CollectionItemWrapper}>
@@ -83,10 +98,12 @@ const MyCollection = () => {
 
     const [myCollection, setMyCollection] = useState([]);
     const [visible, setVisible] = useState(false);
+
+    console.log('myCollection: ', myCollection);
   
     useEffect(() => {
         {firebase.auth().currentUser&&firebase.firestore()
-            .collection('reviews').doc(firebase.auth().currentUser.uid).collection('userReviews')
+            .collection('collections').doc(firebase.auth().currentUser.uid).collection('userCollection')
             .get()
             .then((querySnapshot) => {
                 let posts = querySnapshot.docs.map(doc => {
@@ -109,22 +126,24 @@ const MyCollection = () => {
   };
 
   return (
-      <>
+    <>
+      <View style={styles.container}>
         <Snackbar visible={visible}>
-            Review deleted
+          Review deleted
         </Snackbar>
-          <FlatList
-              data={myCollection}
-              renderItem={({ item }) => (
-                  <CollectionItemWithActions
-                      whisky={item}
-                      onDelete={() => onDelete(item.id)}
-                  />
-              )}
-              keyExtractor={({ id }) => id}
-              ItemSeparatorComponent={ItemSeparator}
-          />
-      </>
+        <FlatList
+          data={myCollection}
+          renderItem={({ item }) => (
+            <CollectionItemWithActions
+              whisky={item}
+              onDelete={() => onDelete(item.id)}
+            />
+          )}
+          keyExtractor={({ id }) => id}
+          ItemSeparatorComponent={ItemSeparator}
+        />
+      </View>
+    </>
   );
 };
 

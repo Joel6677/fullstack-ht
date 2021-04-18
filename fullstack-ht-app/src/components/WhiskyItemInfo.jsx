@@ -4,7 +4,6 @@ import { Divider, Avatar, Button } from 'react-native-paper';
 import { useHistory } from 'react-router-native';
 import theme from '../theme';
 import Text from './Text';
-import formatInThousands from '../utils/formatInThousands';
 import { addToWishList, addToCollection } from '../firebase/uploads';
 
 const styles = StyleSheet.create({
@@ -36,7 +35,8 @@ const styles = StyleSheet.create({
     },
     avatarContainer: {
         flexGrow: 0,
-        marginRight: 10
+        marginRight: 10,
+        borderRadius: 5
     },
     avatarIconContainer: {
         flexGrow: 0,
@@ -64,6 +64,7 @@ const styles = StyleSheet.create({
     avatar: {
         width: 120,
         height: 200,
+        borderRadius: 5,
     },
     countItem: {
         flexGrow: 0,
@@ -86,7 +87,7 @@ const CountItem = ({ label, count, ...props }) => {
     return (
         <View style={styles.countItem}>
             <Text style={styles.countItemCount} fontWeight="bold" {...props}>
-                {formatInThousands(count)}
+                {count}
             </Text>
             <Text color="textSecondary">{label}</Text>
         </View>
@@ -124,14 +125,16 @@ const WhiskyItemInfo = ({ whisky, id }) => {
 
 
     const addWhiskyToMyCollection = () => {
-        addToCollection(id);
+        console.log('add whisky to my collection');
+        addToCollection(whisky, id);
         Alert.alert(
             "Whisky added to my collection"
           );
     };
 
     const addWhiskyToMyWishList = () => {
-        addToWishList(id);
+        console.log('add whisky to my wish list')
+        addToWishList(whisky, id);
         Alert.alert(
             "Whisky added to my wish list"
           );
@@ -304,8 +307,8 @@ const WhiskyItemInfo = ({ whisky, id }) => {
             </View>
             <Divider/>
             <View style={styles.allButtonsContainer}>
-                <Button style={styles.buttonContainer} mode="outlined" onPress={() => { addWhiskyToMyCollection; }}>Add to collection</Button>
-                <Button style={styles.buttonContainer} mode="outlined" onPress={() => { addWhiskyToMyWishList; }}>Add to wishlist</Button>
+                <Button style={styles.buttonContainer} mode="outlined" onPress={() => { addWhiskyToMyCollection(); }}>Add to collection</Button>
+                <Button style={styles.buttonContainer} mode="outlined" onPress={() => { addWhiskyToMyWishList(); }}>Add to wishlist</Button>
                 <Button style={styles.buttonContainer} mode="outlined" onPress={() => { history.push(`/create-review/${id}`); }}>Create review</Button>
             </View>
             

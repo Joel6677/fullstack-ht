@@ -22,57 +22,61 @@ export const uploadUserInfo = async (firstName, lastName, birthdate, bio) => {
 
 };
 
-export const addToWishList = async (whiskyID) => {
+export const addToWishList = async (whisky, whiskyID) => {
 
-    try {
         const currentUser = firebase.auth().currentUser;
 
         const db = firebase.firestore();
-        db.collection('users')
+        db.collection('wishLists')
             .doc(currentUser.uid)
-            .collection('wishlist')
-            .doc(whiskyID)
-            .set({
-                whiskyID: whiskyID
+            .collection('userWishList')
+            .add({
+                whiskyID: whiskyID,
+                brand: whisky.brand,
+                nameAddition: whisky.nameAddition,
+                age: whisky.age,
+                distillationDate: whisky.distillationDate,
+                bottlingDate: whisky.bottlingDate,
+                abv: whisky.abv,
+                bottleSize: whisky.bottleSize,
+                downloadURL: whisky.downloadURL,
+                reviewCount: whisky.reviewCount,
+                rating: whisky.rating,
+                bottler: whisky.bottler
+            }).then(() => {
+                console.log('whisky added to wish list');
+            }).catch((error) => {
+                console.error(error);
             });
-    } catch (err) {
-        console.log('add to wish list error: ', err);
-    }
 
 };
 
-export const addMessage = async (text, sendBy, sendTo) => {
+
+export const addToCollection = (whisky, whiskyID) => {
+
+    const currentUser = firebase.auth().currentUser;
 
     const db = firebase.firestore();
-
-    db.collection('messages').add({
-            text: text,
-            sendBy: sendBy,
-            sendTo: sendTo
-
-        }).then(() => { console.log('uploaded successfully!'); })
-        .catch((error) => { console.error('error writing document: ', error); });
-};
-
-
-
-
-
-export const addToCollection = async (whiskyID) => {
-
-    try {
-        const currentUser = firebase.auth().currentUser;
-
-        const db = firebase.firestore();
-        db.collection('users')
-            .doc(currentUser.uid)
-            .collection('collection')
-            .doc(whiskyID)
-            .set({
-                whiskyID: whiskyID
-            });
-    } catch (err) {
-        console.log('add to collection error: ', err);
-    }
+    db.collection('collections')
+        .doc(currentUser.uid)
+        .collection('userCollection')
+        .add({
+            whiskyID: whiskyID,
+            brand: whisky.brand,
+            nameAddition: whisky.nameAddition,
+            age: whisky.age,
+            distillationDate: whisky.distillationDate,
+            bottlingDate: whisky.bottlingDate,
+            abv: whisky.abv,
+            bottleSize: whisky.bottleSize,
+            downloadURL: whisky.downloadURL,
+            reviewCount: whisky.reviewCount,
+            rating: whisky.rating,
+            bottler: whisky.bottler
+        }).then(() => {
+            console.log('whisky added to collection');
+        }).catch((error) => {
+            console.error(error);
+        });
 
 };

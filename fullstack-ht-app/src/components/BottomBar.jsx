@@ -9,7 +9,6 @@ import { useHistory } from 'react-router-native';
 import theme from '../theme';
 import { StateContext } from '../state';
 import { Appbar } from 'react-native-paper';
-import {SignOut} from '../firebase/auth';
 
 const styles = StyleSheet.create({
   container: {
@@ -38,11 +37,11 @@ const BottomBar = () => {
     <View style={styles.container}>
       <Appbar.Header color={theme.colors.primary} style={styles.appbar} statusBarHeight={0}>
         <Appbar.Action icon="home" onPress={() => route("/")} />
-        <Appbar.Action icon="magnify" onPress={() => route("/sign-in-email")} />
-        <Appbar.Action icon="camera" onPress={() => route("/userpage")} />
+        <Appbar.Action icon="magnify" onPress={() => route("/")} />
+        <Appbar.Action icon="camera" onPress={() => route("/scan-whisky")} />
         <Appbar.Action
           icon="email"
-          onPress={() => route('/choose-pic')}
+          onPress={() => route('/myMessages')}
         />
       </Appbar.Header>
     </View>

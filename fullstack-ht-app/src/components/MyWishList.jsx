@@ -1,15 +1,28 @@
 import React , {useState, useEffect} from 'react';
 import { FlatList, View, StyleSheet, Alert } from 'react-native';
-import { Button, Snackbar } from 'react-native-paper';
+import { Button, Snackbar } from 'react-native-paper';
 import { Link } from 'react-router-native';
-import * as firebase from 'firebase';
+// import * as firebase from 'firebase';
+
+import firebase from "firebase/app";
+import "firebase/auth";
+import "firebase/firestore";
 import WhiskyItem from './WhiskyItem';
 
 
 const styles = StyleSheet.create({
+  container: {
+    flexDirection: 'column',
+    zIndex: 1,
+    // position: 'absolute',
+    height: '100%',
+    width: '100%',
+    // paddingTop: 80,
+    paddingBottom: 60
+},
   WishListItemWrapper: {
     padding: 15,
-    backgroundColor: 'orange',
+    backgroundColor: '#FFD700',
   },
   separator: {
     height: 10,
@@ -49,8 +62,8 @@ const DeleteWishListButton = ({ onPress }) => {
     };
   
     return (
-      <Button onPress={deleteWithConfirmation} mode='outlined'>
-        Delete review
+      <Button onPress={deleteWithConfirmation}>
+        Delete whisky
       </Button>
     );
   };
@@ -58,6 +71,8 @@ const DeleteWishListButton = ({ onPress }) => {
 
 
 const WishListItemWithActions = ({ whisky, onDelete }) => {
+
+  console.log('whiskyID: ', whisky.whiskyID);
 
   return (
     <View style={styles.WishListItemWrapper}>
@@ -83,10 +98,12 @@ const MyWishList = () => {
 
     const [myWishList, setMyWishList] = useState([]);
     const [visible, setVisible] = useState(false);
+
+    console.log('myWishList: ', myWishList);
   
     useEffect(() => {
         {firebase.auth().currentUser&&firebase.firestore()
-            .collection('reviews').doc(firebase.auth().currentUser.uid).collection('userReviews')
+            .collection('wishLists').doc(firebase.auth().currentUser.uid).collection('userWishList')
             .get()
             .then((querySnapshot) => {
                 let posts = querySnapshot.docs.map(doc => {
@@ -109,22 +126,24 @@ const MyWishList = () => {
   };
 
   return (
-      <>
+    <>
+      <View style={styles.container}>
         <Snackbar visible={visible}>
-            Review deleted
+          Review deleted
         </Snackbar>
-          <FlatList
-              data={myWishList}
-              renderItem={({ item }) => (
-                  <WishListItemWithActions
-                      whisky={item}
-                      onDelete={() => onDelete(item.id)}
-                  />
-              )}
-              keyExtractor={({ id }) => id}
-              ItemSeparatorComponent={ItemSeparator}
-          />
-      </>
+        <FlatList
+          data={myWishList}
+          renderItem={({ item }) => (
+            <WishListItemWithActions
+              whisky={item}
+              onDelete={() => onDelete(item.id)}
+            />
+          )}
+          keyExtractor={({ id }) => id}
+          ItemSeparatorComponent={ItemSeparator}
+        />
+      </View>
+    </>
   );
 };
 

@@ -2,38 +2,46 @@ import React , {useState, useEffect} from 'react';
 import { FlatList, View, StyleSheet, Alert } from 'react-native';
 import { Button, Snackbar } from 'react-native-paper';
 import { Link } from 'react-router-native';
-import * as firebase from 'firebase';
+// import * as firebase from 'firebase';
+
+import firebase from "firebase/app";
+import "firebase/auth";
+import "firebase/firestore";
 import ReviewItem from './ReviewItem';
 
 
 const styles = StyleSheet.create({
 container: {
+    flexDirection: 'column',
     zIndex: 1,
-    position: 'absolute',
+    // position: 'absolute',
     height: '100%',
     width: '100%',
+    // paddingTop: 80,
+    paddingBottom: 60
 },
   reviewItemWrapper: {
     padding: 15,
-    backgroundColor: 'orange',
+    backgroundColor: '#FFD700',
   },
   separator: {
     height: 10,
   },
   actionsContainer: {
     marginTop: 15,
+    borderWidth: 3,
     flexDirection: 'row',
   },
   actionButton: {
-    flexGrow: 1,
-    marginRight: 15,
+    marginTop: 5
+
   },
   lastActionButton: {
-    marginRight: 0,
+
   },
 });
 
-const DeleteReviewButton = ({ onPress, ...props }) => {
+const DeleteReviewButton = ({ onPress }) => {
     const alertButtons = [
       {
         text: 'Cancel',
@@ -55,7 +63,7 @@ const DeleteReviewButton = ({ onPress, ...props }) => {
     };
   
     return (
-      <Button onPress={deleteWithConfirmation} mode='outlined'>
+      <Button onPress={deleteWithConfirmation}>
         Delete review
       </Button>
     );
@@ -65,12 +73,14 @@ const DeleteReviewButton = ({ onPress, ...props }) => {
 
 const ReviewItemWithActions = ({ review, onDelete }) => {
 
+  console.log('review: ', review.id);
+
   return (
     <View style={styles.reviewItemWrapper}>
         <ReviewItem review={review}/> 
         <Link
           component={Button}
-          to={`/whiskies/${review.whiskyID}`}
+          to={`/whiskies/${review.id}`}
           style={styles.actionButton}
         >
           View whisky

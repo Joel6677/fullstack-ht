@@ -1,7 +1,6 @@
 import React from 'react';
 import { View, Image, StyleSheet } from 'react-native';
 import Text from './Text';
-import formatInThousands from '../utils/formatInThousands';
 
 const styles = StyleSheet.create({
   backgroundCountainer: {
@@ -11,22 +10,25 @@ const styles = StyleSheet.create({
     padding: 5,
     width: '100%',
     flexDirection: 'row',
-    backgroundColor: 'yellow'
+    backgroundColor: '#FFD700'
   },
   contentContainer: {
-    width: '70%',
+    borderRadius: 5,
+    width: '60%',
     flexGrow: 1,
 
-    backgroundColor: 'green'
+    backgroundColor: '#f2eecb'
   },
   middleContainer: {
     alignItems: 'center',
+    padding: 5,
     flexGrow: 0,
     // backgroundColor: 'brown'
 
   },
   bottomContainer: {
     flexGrow: 0,
+    padding: 5,
     // backgroundColor: 'blue',
     justifyContent: 'space-between',
     flexDirection: 'row',
@@ -37,14 +39,16 @@ const styles = StyleSheet.create({
   topContainer: {
     flexGrow: 1,
     padding: 5,
+    // backgroundColor: 'purple'
     // alignItems: 'center'
   },
   nameText: {
     marginBottom: 5,
   },
   avatar: {
-    width: 80,
-    height: 160,
+    width: 120,
+    height: 180,
+    borderRadius: 5
   },
   countItem: {
     flexGrow: 0,
@@ -61,9 +65,9 @@ const CountItem = ({ label, count, ...props }) => {
   return (
     <View style={styles.countItem}>
       <Text style={styles.countItemCount} fontWeight="bold" {...props}>
-        {formatInThousands(count)}
+        {count}
       </Text>
-      <Text color="textSecondary">{label}</Text>
+      <Text color="textPrimary">{label}</Text>
     </View>
   );
 };

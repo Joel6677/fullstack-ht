@@ -10,7 +10,10 @@ import Text from './Text';
 import FormikTextInput from './FormikTextInput';
 import { StateContext } from '../state';
 import DateTimePicker from '@react-native-community/datetimepicker';
-import * as firebase from 'firebase';
+// import * as firebase from 'firebase';
+import firebase from "firebase/app";
+import "firebase/auth";
+import "firebase/firestore";
 import Moment from 'moment';
 import theme from '../theme';
 
@@ -414,8 +417,8 @@ const UploadWhisky = () => {
       chillFiltration: state.cfChecked,
       downloadURL: downloadURL,
       reviewCount: 0,
-      rating: 0
-
+      rating: 0,
+      created_at: Moment(new Date()).format('DD-MM-YYYY')
 
     });
     history.push('/');

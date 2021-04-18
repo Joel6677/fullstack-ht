@@ -1,15 +1,18 @@
 import React from 'react';
 import RNTextDetector from "react-native-text-detector";
-import { View } from 'react-native';
+import { View, StyleSheet } from 'react-native';
 import { Button } from 'react-native-paper';
 
 const styles = StyleSheet.create({
 
     container: {
-      position: 'absolute',
-      zIndex: 1,
-      height: '100%',
-      width: '100%'
+        padding: 5,
+        height: '100%',
+        width: '100%',
+        position: 'absolute',
+        zIndex: 1,
+        paddingTop: 80,
+        paddingBottom: 60
     }
   });
   

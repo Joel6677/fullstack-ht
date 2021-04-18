@@ -38,7 +38,8 @@ const styles = StyleSheet.create({
     zIndex: 2
   },
   snackbar: {
-    marginBottom: 100
+    marginBottom: 100,
+    width: 200
   }
 });
 
@@ -159,15 +160,11 @@ const ChoosePic = () => {
     {image && <Image source={{ uri: image }} style={{ width: 150, height: 150 }} />}
     <Button compact={true} icon='arrow-right-bold-box' mode='contained' style={styles.nextButton} onPress={()=>(history.push('/upload-userinfo'))}>Next</Button>
     <Snackbar
+        duration={1500}
         style={styles.snackbar}
         visible={visible}
         onDismiss={onDismissSnackBar}
-        action={{
-          label: 'Undo',
-          onPress: () => {
-            console.log('pressed');
-          },
-        }}>
+        >
         Image uploaded.
       </Snackbar>
   </View>

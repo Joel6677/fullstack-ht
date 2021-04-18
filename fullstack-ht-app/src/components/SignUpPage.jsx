@@ -55,7 +55,7 @@ const route = (route) => {
         <Button icon="google" mode="contained" onPress={submitSignInWithGoogle} style={styles.button}>
           Sign up with Google
         </Button>
-        <Button icon="facebook-box" mode="contained" onPress={submitSignInWithFacebook} style={styles.button}>
+        <Button icon="facebook" mode="contained" onPress={submitSignInWithFacebook} style={styles.button}>
           Sign up with Facebook
         </Button>
         <Button icon="phone" mode="contained" onPress={() => { route('/sign-up-phone'); }} style={styles.button}>

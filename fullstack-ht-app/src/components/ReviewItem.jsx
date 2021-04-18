@@ -5,7 +5,7 @@ import Text from './Text';
 const styles = StyleSheet.create({
   container: {
     zIndex: 2,
-    backgroundColor: 'red',
+    backgroundColor: '#f2eecb',
     flexDirection: 'column',
     padding: 10
   },

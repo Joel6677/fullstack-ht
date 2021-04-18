@@ -89,7 +89,7 @@ const CreateReview = () => {
 
     firebase.firestore().collection('userinfo').doc(firebase.auth().currentUser.uid)
     .get().then((doc) => {setName(doc.data().name);});
-  }, [id]);
+  }, []);
 
   const onSubmit = async (values) => {
 

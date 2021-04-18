@@ -13,7 +13,6 @@ import {SignOut} from '../firebase/auth';
 
 const styles = StyleSheet.create({
   container: {
-    backgroundColor: theme.colors.primary,
     zIndex: 2,
     position: 'absolute',
     width: '100%'
@@ -29,16 +28,17 @@ const AppBar = () => {
   const history = useHistory();
   const { state, dispatch } = useContext(StateContext);
 
+
   return (
 
     <View style={styles.container}>
-      <Appbar.Header color={theme.colors.primary} style={styles.appbar} statusBarHeight={Constants.statusBarHeight}>
+      <Appbar.Header style={styles.appbar} statusBarHeight={Constants.statusBarHeight}>
         <Appbar.Action
           icon="menu"
           onPress={() => dispatch({ type: "SET_OPEN", payload: !state.open })}
         />
         <Appbar.Action
-          icon="settings"
+          icon="logout"
           onPress={() => SignOut()}
         />
       </Appbar.Header>

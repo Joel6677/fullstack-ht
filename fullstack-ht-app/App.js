@@ -2,12 +2,26 @@ import React from 'react';
 import { NativeRouter } from 'react-router-native';
 
 import Main from './src/components/Main';
-import AuthStorage from './src/utils/authStorage';
-import AuthStorageContext from './src/contexts/AuthStorageContext';
 import { StateProvider } from "./src/state";
+import { DefaultTheme, Provider as PaperProvider } from 'react-native-paper';
 import firebase from "firebase/app";
 
-const authStorage = new AuthStorage();
+const theme = {
+  ...DefaultTheme,
+  roundness: 2,
+  colors: {
+    ...DefaultTheme.colors,
+    primary: '#334b8b',
+    // accent: '#e6dd3b',
+    // background: '#e6dd3b',
+    // onSurface: '#e6dd3b',
+    // text: '#e6dd3b',
+    // placeholder: '#white',
+    // backdrop: 'white',
+    // notification: '#00adb5'
+  },
+};
+
 
 const firebaseConfig = {
   apiKey: "AIzaSyDkW-jIpPtfIi7gvbaTyWVw3GKWZR2GF00",
@@ -26,13 +40,13 @@ firebase.initializeApp(firebaseConfig);
 
 const App = () => {
   return (
-    <NativeRouter>
-        <AuthStorageContext.Provider value={authStorage}>
-          <StateProvider>
-            <Main />
-          </StateProvider>
-        </AuthStorageContext.Provider>
-    </NativeRouter>
+    <PaperProvider theme={theme}>
+      <NativeRouter>
+        <StateProvider>
+          <Main />
+        </StateProvider>
+      </NativeRouter>
+    </PaperProvider>
   );
 };
 

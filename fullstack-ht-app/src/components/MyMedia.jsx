@@ -5,7 +5,13 @@ import * as firebase from 'firebase';
 const styles = StyleSheet.create({
 
   container: {
-
+    flexDirection: 'column',
+    zIndex: 1,
+    // position: 'absolute',
+    height: '100%',
+    width: '100%',
+    // paddingTop: 80,
+    paddingBottom: 60
   }
 
 });
