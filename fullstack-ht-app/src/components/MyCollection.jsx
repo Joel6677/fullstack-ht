@@ -54,8 +54,8 @@ const DeleteCollectionButton = ({ onPress }) => {
   
     const deleteWithConfirmation = () => {
       Alert.alert(
-        'Delete review',
-        'Are you sure you want to delete this review?',
+        'Delete whisky',
+        'Are you sure you want to delete this whisky?',
         alertButtons,
         { cancelable: false },
       );
@@ -119,9 +119,12 @@ const MyCollection = () => {
 }}, []);
 
   const onDelete = async (id) => {
-    // use transaction
-    firebase.firestore().collection('reviews').doc(firebase.auth().currentUser.uid).collection('userReviews')
+
+    let db = firebase.firestore();
+    
+    db.collection('collections').doc(firebase.auth().currentUser.uid).collection('userCollection')
     .doc(id).delete().then(() => {setVisible(true);}).catch((error) => {console.log(error);});
+
     
   };
 

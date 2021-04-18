@@ -118,13 +118,22 @@ const MyReviews = () => {
 }}, []);
 
   const onDelete = async (id) => {
-    // use transaction
-    firebase.firestore().collection('reviews').doc(firebase.auth().currentUser.uid).collection('userReviews')
-    .doc(id).delete().then(() => {setVisible(true);}).catch((error) => {console.log(error);});
+
+    console.log('pressed delete');
+
+    let batch = firebase.firestore().batch();
+
+    let reviewRef1 = firebase.firestore().collection('reviews').doc(firebase.auth().currentUser.uid).collection('userReviews')
+      .doc(id);
+    batch.delete(reviewRef1);
+
+    let reviewRef2 = firebase.firestore().collection('whiskies').doc(id)
+      .collection('reviews').doc(firebase.auth().currentUser.uid);
+    batch.delete(reviewRef2);
+
+    batch.commit().then(() => { setVisible(true); }).catch((error) => { console.log(error); });
     
   };
-
-  console.log('reviews: ', reviews);
 
   return (
       <>

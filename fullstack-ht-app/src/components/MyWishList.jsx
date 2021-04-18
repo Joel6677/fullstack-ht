@@ -54,8 +54,8 @@ const DeleteWishListButton = ({ onPress }) => {
   
     const deleteWithConfirmation = () => {
       Alert.alert(
-        'Delete review',
-        'Are you sure you want to delete this review?',
+        'Delete whisky',
+        'Are you sure you want to delete this whisky?',
         alertButtons,
         { cancelable: false },
       );
@@ -119,9 +119,10 @@ const MyWishList = () => {
 }}, []);
 
   const onDelete = async (id) => {
-    // use transaction
-    firebase.firestore().collection('reviews').doc(firebase.auth().currentUser.uid).collection('userReviews')
-    .doc(id).delete().then(() => {setVisible(true);}).catch((error) => {console.log(error);});
+    
+    firebase.firestore().collection('wishLists').doc(firebase.auth().currentUser.uid).collection('userWishList')
+    .doc(id).delete()
+    .then(() => {setVisible(true);}).catch((error) => {console.log(error);});
     
   };
 
