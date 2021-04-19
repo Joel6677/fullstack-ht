@@ -4,7 +4,7 @@ import "firebase/auth";
 import "firebase/firestore";
 
 
-export const sendChatMessage = (chatID, text, otherUserUid) => {
+export const sendChatMessage = (chatID, text) => {
 
   firebase.firestore()
     .collection('messages')
@@ -20,10 +20,11 @@ export const sendChatMessage = (chatID, text, otherUserUid) => {
 
     firebase.firestore()
     .collection('messages')
-    .add({
+    .doc(chatID)
+    .set({
+      chatID: chatID,
       text: text,
       createdAt: new Date().getTime(),
-      users: [firebase.auth().currentUser.uid, otherUserUid],
     });    
 };
 

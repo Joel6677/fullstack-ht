@@ -143,7 +143,7 @@ const Messenger = () => {
 
     const sendMessage = () => {
 
-        sendChatMessage(chatID(),text,id);
+        sendChatMessage(chatID(),text);
         setText('');
 
     };

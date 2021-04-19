@@ -38,38 +38,70 @@ const ItemSeparator = () => {
 
 };
 
+const getMessages = async () => {
+
+    const currentUser = firebase.auth().currentUser;
+
+    const chatIDs = await firebase.firestore().
+    collection('users')
+        .where('email', '!=', currentUser.email )
+        .get()
+        .then((querySnapshot) => {
+            let ids = querySnapshot.docs.map(doc => {
+                const id = doc.id;
+                const chatIDpre = [];
+                chatIDpre.push(currentUser.uid);
+                chatIDpre.push(id);
+                chatIDpre.sort();
+                return chatIDpre.join('_');
+            });
+            return ids;
+        })
+        .catch((error) => {
+            console.log("Error getting documents: ", error);
+        });
+
+    const messages = await firebase.firestore().
+    collection('messages').where('chatID', 'in', chatIDs)
+        .get()
+        .then((querySnapshot) => {
+            let posts = querySnapshot.docs.map(doc => {
+                const data = doc.data();
+                const userIDs = doc.id.split('_');
+                console.log('userIDs: ', userIDs);
+                let id;
+                for (let i = 0; i < 2; i++) {
+                    if (userIDs[i] !== currentUser.uid) {
+                       id = userIDs[i];
+                    }
+                }
+                return { id, ...data };
+            });
+            return posts;
+        })
+        .catch((error) => {
+            console.log("Error getting documents: ", error);
+        });
+
+        console.log('chatIDs: ', chatIDs);
+        console.log('messages: ', messages);
+
+        return messages;
+
+};
+
 
 const MyMessages = () => {
     const history = useHistory();
     const [messages, setMessages] = useState([]);
-    const currentUser = firebase.auth().currentUser;
 
-    useEffect(() => {
-        firebase.firestore().
-        collection('messages')
-            .where('users', 'array-contains', currentUser.uid)
-            .get()
-            .then((querySnapshot) => {
-                let posts = querySnapshot.docs.map(doc => {
 
-                    let id;
-
-                    for (let i = 0; i < 2; i++) {
-                        if (doc.data().users[i] !== currentUser.uid) {
-                            id = doc.data().users[i];
-                        }
-                    }
-                    const data = doc.data();
-                    
-                    return { id, ...data };
-                });
-                 console.log('posts: ', posts);
-                setMessages(posts);
-            })
-            .catch((error) => {
-                console.log("Error getting documents: ", error);
-            });
+    useEffect( () => {   
+        
+        getMessages().then((messages) => {setMessages(messages);});
+       
     }, []);
+
 
     return (
         <View style={styles.container}>
