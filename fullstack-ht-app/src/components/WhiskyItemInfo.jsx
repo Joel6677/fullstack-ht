@@ -133,7 +133,7 @@ const WhiskyItemInfo = ({ whisky, id }) => {
     };
 
     const addWhiskyToMyWishList = () => {
-        console.log('add whisky to my wish list')
+        console.log('add whisky to my wish list');
         addToWishList(whisky, id);
         Alert.alert(
             "Whisky added to my wish list"

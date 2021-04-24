@@ -48,21 +48,21 @@ const styles = StyleSheet.create({
     textInput: {
         margin: 10,
         backgroundColor: 'white',
-        width: '80%'
+        width: '80%',
     },
     messageContainerReceived: {
         width: 200,
         marginLeft: 5,
         alignSelf: 'flex-start',
-        backgroundColor: '#3449BC',
+        backgroundColor: '#ffd700',
         borderRadius: 5
     },
     sendMessageContainer: {
-        borderRadius: 5,
+        borderRadius: 10,
         marginTop: 10,
         flexDirection: 'row',
         alignItems: 'center',
-        backgroundColor: 'gray'
+        backgroundColor: '#CACACA'
         
     }
 });
@@ -164,6 +164,7 @@ const Messenger = () => {
 
             <View style={styles.sendMessageContainer}>
                 <TextInput
+                    mode='outlined'
                     label=""
                     value={text}
                     onChangeText={text => setText(text)}

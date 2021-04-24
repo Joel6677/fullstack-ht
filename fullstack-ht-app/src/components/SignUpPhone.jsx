@@ -7,7 +7,10 @@ import {
     TouchableOpacity
 } from 'react-native';
 import { FirebaseRecaptchaVerifierModal, FirebaseRecaptchaBanner } from 'expo-firebase-recaptcha';
-import * as firebase from 'firebase';
+// import * as firebase from 'firebase';
+import firebase from "firebase/app";
+import "firebase/auth";
+import "firebase/firestore";
 import {firebaseConfig} from '../firebase/Fire';
 import Text from './Text';
 import theme from '../theme';

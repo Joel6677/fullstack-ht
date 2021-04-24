@@ -28,6 +28,7 @@ import UserList from './UserList';
 import MyWishList from './MyWishList';
 import MyCollection from './MyCollection';
 import ScanWhisky from './ScanWhisky';
+import UploadPost from './UploadPost';
 // import MyMedia from './MyMedia';
 
 const styles = StyleSheet.create({
@@ -109,6 +110,9 @@ const Main = () => {
         </Route>
         <Route path="/scan-whisky" exact>
           <ScanWhisky/>
+        </Route>
+        <Route path="/upload-post" exact>
+          <UploadPost/>
         </Route>
         <Redirect to="/" />
       </Switch>

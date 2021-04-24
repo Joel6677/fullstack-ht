@@ -70,6 +70,7 @@ const UserList = () => {
 
         firebase.firestore()
             .collection('users')
+            .where('email', '!=', firebase.auth().currentUser.email)
             .get()
             .then((querySnapshot) => {
                 let posts = querySnapshot.docs.map(doc => {

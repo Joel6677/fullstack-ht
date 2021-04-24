@@ -5,7 +5,7 @@ import * as yup from 'yup';
 import { useHistory } from 'react-router-native';
 import uuid from 'uuid';
 import * as ImagePicker from 'expo-image-picker';
-import { Button, Checkbox, ProgressBar, Colors } from 'react-native-paper';
+import { Button, Checkbox, Snackbar } from 'react-native-paper';
 import Text from './Text';
 import FormikTextInput from './FormikTextInput';
 import { StateContext } from '../state';
@@ -308,6 +308,8 @@ const UploadWhisky = () => {
   const [bottlingDate, setBottlingDate] = useState('');
   const [distillationPressed, setDistillationPressed] = useState(false);
   const [bottlingPressed, setBottlingPressed] = useState(false);
+  const [uploadMessage, setUploadMessage] = useState();
+  const onDismissSnackBar = () => setVisible(false);
 
 
   const addImageToFirestore = async (downloadURL, whiskyID) => { 
@@ -395,7 +397,11 @@ const UploadWhisky = () => {
     const {distillery, brand, nameAddition, country, region, category, age, abv, bottleSize, 
     bottler, series, description, caskType, caskNumber, numberOfBottles} = values;
 
+    const fullName = distillery + brand + age + (distillationDate&&Moment(distillationDate).format('DD-MM-YYYY'))
+     + abv + bottler;
+
     firebase.firestore().collection('whiskies').doc(nWhiskyID).set({
+      fullName : fullName,
       distillery: distillery,
       brand: brand,
       nameAddition: nameAddition,
@@ -420,7 +426,9 @@ const UploadWhisky = () => {
       rating: 0,
       created_at: Moment(new Date()).format('DD-MM-YYYY')
 
-    });
+    }).then(() => {console.log('Uploaded whisky successfully');}).catch((error) => {
+      console.log("Error uploading whisky: ", error);
+  });
     history.push('/');
   };
 
@@ -458,6 +466,14 @@ const UploadWhisky = () => {
       </Formik>
       {image && <Image source={{ uri: image }} style={{ width: 100, height: 100, alignSelf: 'center' }} />} 
       </ScrollView>
+      <Snackbar
+        duration={1500}
+        style={styles.snackbar}
+        visible={visible}
+        onDismiss={onDismissSnackBar}
+        >
+        {uploadMessage}
+      </Snackbar>
       { state.showDistillationDate && (
         <DateTimePicker
           testID="dateTimePicker"

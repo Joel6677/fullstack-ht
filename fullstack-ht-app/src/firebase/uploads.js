@@ -30,7 +30,8 @@ export const addToWishList = async (whisky, whiskyID) => {
         db.collection('wishLists')
             .doc(currentUser.uid)
             .collection('userWishList')
-            .add({
+            .doc(whiskyID)
+            .set({
                 whiskyID: whiskyID,
                 brand: whisky.brand,
                 nameAddition: whisky.nameAddition,
@@ -60,7 +61,8 @@ export const addToCollection = (whisky, whiskyID) => {
     db.collection('collections')
         .doc(currentUser.uid)
         .collection('userCollection')
-        .add({
+        .doc(whiskyID)
+        .set({
             whiskyID: whiskyID,
             brand: whisky.brand,
             nameAddition: whisky.nameAddition,

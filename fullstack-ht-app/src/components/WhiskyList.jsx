@@ -42,13 +42,13 @@ const ItemSeparator = () => {
 };
 
 const orderByOptions = [
-    { label: 'Latest repositories', value: 'latest' },
+    { label: 'Latest whiskies', value: 'latest' },
     {
-        label: 'Highest rated repositories',
+        label: 'Highest rated whiskies',
         value: 'highestRating',
     },
     {
-        label: 'Lowest rated repositories',
+        label: 'Lowest rated whiskies',
         value: 'lowestRating',
     },
 ];
@@ -135,39 +135,91 @@ const WhiskyList = () => {
     
     useEffect(() => {
         if (searchQuery !== '') {
-            firebase.firestore()
-            .collection('whiskies')
-            .where('brand', '==', searchQuery)
-            .orderBy(`${variablesByOrderBy[orderBy].orderBy}`, `${variablesByOrderBy[orderBy].orderDirection}`)
-            .get()
-            .then((querySnapshot) => {
-                let posts = querySnapshot.docs.map(doc => {
-                    const data = doc.data();
-                    const id = doc.id;
-                    return { id, ...data };
+            const whiskiesListener = firebase.firestore()
+                .collection('whiskies')
+                .where('brand', '==', searchQuery)
+                .orderBy(`${variablesByOrderBy[orderBy].orderBy}`, `${variablesByOrderBy[orderBy].orderDirection}`)
+                .onSnapshot(querySnapshot => {
+                    const whiskies = querySnapshot.docs.map(doc => {
+                        const firebaseData = doc.data();
+                        console.log('firebaseData: ', firebaseData);
+
+                        const data = {
+                            id: doc.id,
+                            ...firebaseData
+                        };
+
+                        return data;
+                    });
+
+                    setWhiskies(whiskies);
                 });
-                setWhiskies(posts);
-            })
-            .catch((error) => {
-                console.log("Error getting documents: ", error);
-            });
+
+
+            return () => whiskiesListener();
+
         } else {
-            firebase.firestore()
-            .collection('whiskies')
-            .orderBy(`${variablesByOrderBy[orderBy].orderBy}`, `${variablesByOrderBy[orderBy].orderDirection}`)
-            .get()
-            .then((querySnapshot) => {
-                let posts = querySnapshot.docs.map(doc => {
-                    const data = doc.data();
-                    const id = doc.id;
-                    return { id, ...data };
-                });
-                setWhiskies(posts);
-            })
-            .catch((error) => {
-                console.log("Error getting documents: ", error);
-            });
+
+            const whiskiesListener =
+                firebase.firestore()
+                    .collection('whiskies')
+                    .orderBy(`${variablesByOrderBy[orderBy].orderBy}`, `${variablesByOrderBy[orderBy].orderDirection}`)
+                    .onSnapshot(querySnapshot => {
+                        const whiskies = querySnapshot.docs.map(doc => {
+                            const firebaseData = doc.data();
+                            console.log('firebaseData: ', firebaseData);
+
+                            const data = {
+                                id: doc.id,
+                                ...firebaseData
+                            };
+
+                            return data;
+                        });
+
+                        setWhiskies(whiskies);
+                    });
+
+
+            return () => whiskiesListener();
+
+
         }
+
+        // if (searchQuery !== '') {
+        //     firebase.firestore()
+        //     .collection('whiskies')
+        //     .where('brand', '==', searchQuery)
+        //     .orderBy(`${variablesByOrderBy[orderBy].orderBy}`, `${variablesByOrderBy[orderBy].orderDirection}`)
+        //     .get()
+        //     .then((querySnapshot) => {
+        //         let posts = querySnapshot.docs.map(doc => {
+        //             const data = doc.data();
+        //             const id = doc.id;
+        //             return { id, ...data };
+        //         });
+        //         setWhiskies(posts);
+        //     })
+        //     .catch((error) => {
+        //         console.log("Error getting documents: ", error);
+        //     });
+        // } else {
+        //     firebase.firestore()
+        //     .collection('whiskies')
+        //     .orderBy(`${variablesByOrderBy[orderBy].orderBy}`, `${variablesByOrderBy[orderBy].orderDirection}`)
+        //     .get()
+        //     .then((querySnapshot) => {
+        //         let posts = querySnapshot.docs.map(doc => {
+        //             const data = doc.data();
+        //             const id = doc.id;
+        //             return { id, ...data };
+        //         });
+        //         setWhiskies(posts);
+        //     })
+        //     .catch((error) => {
+        //         console.log("Error getting documents: ", error);
+        //     });
+        // }
 
     }, [searchQuery, orderBy]);
     

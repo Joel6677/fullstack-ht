@@ -24,18 +24,13 @@ const styles = StyleSheet.create({
 });
 
 
-const AppBar = () => {
+const CustomAppBar = ({...props}) => {
   const history = useHistory();
-  const { state, dispatch } = useContext(StateContext);
 
   return (
 
     <View style={styles.container}>
       <Appbar.Header style={styles.appbar} statusBarHeight={Constants.statusBarHeight}>
-        <Appbar.Action
-          icon="menu"
-          onPress={() => dispatch({ type: "SET_OPEN", payload: !state.open })}
-        />
         <Appbar.Action
           icon="logout"
           onPress={() => SignOut()}
@@ -46,4 +41,4 @@ const AppBar = () => {
   ); 
 };
 
-export default AppBar;
+export default CustomAppBar;

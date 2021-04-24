@@ -13,7 +13,7 @@ import { Appbar } from 'react-native-paper';
 const styles = StyleSheet.create({
   container: {
     backgroundColor: theme.colors.primary,
-    zIndex: 2,
+    zIndex: 6,
     position: 'absolute',
     width: '100%',
     bottom: 0
