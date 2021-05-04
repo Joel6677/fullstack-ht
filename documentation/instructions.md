@@ -1,4 +1,3 @@
-#Manual
 User can sign up or sign in from the sidemenu.
 Sign in/up with google, facebook and using phonenumber has some bugs and do not work properly.
 
