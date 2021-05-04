@@ -11,6 +11,6 @@ On the homepage user can scroll uploaded whiskies. From there the user can choos
 
 By clicking the whisky the whisky info page opens. From there the user can upload the whisky to users wishlist or collection. From there the user can write a review.
 
-From the users profilepage the user can look the users written reviews, whiskies in users collection and wishlist. From My info page the user can update the users info and change the profile picture. 
+From the users profilepage the user can look the users written reviews, whiskies in users collection and wishlist. User can delete users reviews and whiskies from the wishlist and collection. From My info page the user can update the users info and change the profile picture. 
 
 User can log out from the upperright icon on the appbar.
