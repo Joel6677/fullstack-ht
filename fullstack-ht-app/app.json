@@ -1,17 +1,18 @@
 {
-    "expo": {
-     "name": "fullstack-project",
-     "icon": "./path/to/your/app-icon.png",
-     "version": "1.0.0",
-     "slug": "your-app-slug",
-     "ios": {
-       "bundleIdentifier": "com.yourcompany.yourappname",
-       "buildNumber": "1.0.0"
-     },
-     "android": {
-       "package": "com.mycompany.myapp",
-       "googleServicesFile": "./google-services.json",
-       "versionCode": 1
-     }
-    }
+  "expo": {
+    "name": "full-stack-ht-whisky-app",
+    "icon": "./path/to/your/app-icon.png",
+    "version": "1.0.0",
+    "slug": "full-stack-ht-whisky-app",
+    "ios": {
+      "bundleIdentifier": "com.yourcompany.yourappname",
+      "buildNumber": "1.0.0"
+    },
+    "android": {
+      "package": "com.mycompany.myapp",
+      "googleServicesFile": "./google-services.json",
+      "versionCode": 1
+    },
+    "description": ""
   }
+}
