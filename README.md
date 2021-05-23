@@ -1,6 +1,6 @@
-#Project name:  Whisky app
+# Project name:  Whisky app
 
-##Description:
+## Description:
 This is an app where you can search for whiskies from the database and review them. 
 
 **Usage:**
