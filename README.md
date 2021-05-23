@@ -1,7 +1,7 @@
 # Project name:  Whisky app
 
 ## Description:
-This is an app where you can search for whiskies from the database and review them. 
+### This is an app where you can search for whiskies from the database and review them. 
 
 **Usage:**
 [link to instructions](https://github.com/Joel6677/fullstack-ht/blob/main/documentation/instructions.md)
