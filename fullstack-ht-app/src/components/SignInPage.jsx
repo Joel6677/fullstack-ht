@@ -1,4 +1,4 @@
-import React, { useContext, useRef, useEffect } from 'react';
+import React from 'react';
 import { StyleSheet, View } from 'react-native';
 import { useHistory } from 'react-router-native';
 import { SignInWithGoogle, SignInWithFacebook } from '../firebase/auth';
@@ -12,55 +12,51 @@ const styles = StyleSheet.create({
     backgroundColor: 'white',
     justifyContent: 'center',
     zIndex: 2,
-    height: '100%'
+    height: '100%',
   },
   button: {
-    margin: 30
+    margin: 30,
   },
   heading: {
-    alignItems: 'center'
-  }
+    alignItems: 'center',
+  },
 });
 
-
 const SignInPage = () => {
+  const history = useHistory();
 
-const history = useHistory();
-
-const submitSignInWithGoogle = () => {
+  const submitSignInWithGoogle = () => {
     SignInWithGoogle();
     history.push('/');
-};
+  };
 
-const submitSignInWithFacebook = () => {
-  SignInWithFacebook();
-  history.push('/');
-};
-
-
+  const submitSignInWithFacebook = () => {
+    SignInWithFacebook();
+    history.push('/');
+  };
 
   return (
     <>
-       <View style={styles.container}>
+      <View style={styles.container}>
 
         <View style={styles.heading}>
           <Text color={'primary'} fontSize={'heading'} fontWeight={'bold'}>
             Sign up
-        </Text>
+          </Text>
         </View>
-        <CustomButton onPress={() => {history.push("/sign-up-email");}} style={styles.button}>
-            Sign up with Email
+        <CustomButton onPress={() => { history.push('/sign-up-email'); }} style={styles.button}>
+          Sign up with Email
         </CustomButton>
         <CustomButton onPress={submitSignInWithGoogle} style={styles.button}>
-            Sign up with Google
+          Sign up with Google
         </CustomButton>
-        <CustomButton onPress={submitSignInWithFacebook}  style={styles.button}>
-            Sign up with Facebook
+        <CustomButton onPress={submitSignInWithFacebook} style={styles.button}>
+          Sign up with Facebook
         </CustomButton>
         <CustomButton onPress={SignUpPhone()} style={styles.button}>
-            Sign up with phonenumber
+          Sign up with phonenumber
         </CustomButton>
-       </View>
+      </View>
     </>
 
   );

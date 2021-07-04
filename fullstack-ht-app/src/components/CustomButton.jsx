@@ -21,11 +21,12 @@ const styles = StyleSheet.create({
   },
   colorError: {
     backgroundColor: theme.colors.error,
-  }
+  },
 });
 
-const CustomButton = ({ children, style, color = 'primary', ...props }) => {
-
+const CustomButton = ({
+  children, style, color = 'primary', ...props
+}) => {
   const buttonStyle = [
     styles.container,
     style,

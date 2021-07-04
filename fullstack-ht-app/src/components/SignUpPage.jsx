@@ -2,7 +2,7 @@ import React from 'react';
 import { StyleSheet, View } from 'react-native';
 import { useHistory } from 'react-router-native';
 import { Button } from 'react-native-paper';
-import { SignInWithGoogle, SignInWithFacebook} from '../firebase/auth';
+import { SignInWithGoogle, SignInWithFacebook } from '../firebase/auth';
 import Text from './Text';
 
 const styles = StyleSheet.create({
@@ -12,36 +12,33 @@ const styles = StyleSheet.create({
     height: '100%',
     width: '100%',
     position: 'absolute',
-    zIndex: 1
+    zIndex: 1,
   },
   button: {
-    margin: 30
+    margin: 30,
   },
   heading: {
     paddingBottom: 17,
-    alignSelf: 'center'
-  }
+    alignSelf: 'center',
+  },
 });
 
-
 const SignUpPage = () => {
-
   const history = useHistory();
 
-const submitSignInWithGoogle = () => {
+  const submitSignInWithGoogle = () => {
     SignInWithGoogle();
     history.push('/');
-};
+  };
 
-const submitSignInWithFacebook = () => {
-  SignInWithFacebook();
-  history.push('/');
-};
+  const submitSignInWithFacebook = () => {
+    SignInWithFacebook();
+    history.push('/');
+  };
 
-const route = (route) => {
-  history.push(route);
-};
-
+  const route = (route) => {
+    history.push(route);
+  };
 
   return (
     <>
@@ -49,7 +46,7 @@ const route = (route) => {
         <Text style={styles.heading} color={'primary'} fontSize={'heading'} fontWeight={'bold'}>
           Sign up
         </Text>
-        <Button icon="email" mode="contained" onPress={ ()=> {route("/sign-up-email");}} style={styles.button}>
+        <Button icon="email" mode="contained" onPress={() => { route('/sign-up-email'); }} style={styles.button}>
           Sign up with Email
         </Button>
         <Button icon="google" mode="contained" onPress={submitSignInWithGoogle} style={styles.button}>

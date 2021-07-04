@@ -4,11 +4,10 @@ import { Formik } from 'formik';
 import * as yup from 'yup';
 import { useHistory } from 'react-router-native';
 
-import { Button} from 'react-native-paper';
+import { Button } from 'react-native-paper';
 import { SignUpWithEmail } from '../firebase/auth';
 import Text from './Text';
 import FormikTextInput from './FormikTextInput';
-
 
 const styles = StyleSheet.create({
   container: {
@@ -17,15 +16,15 @@ const styles = StyleSheet.create({
     height: '100%',
     width: '100%',
     position: 'absolute',
-    zIndex: 1
+    zIndex: 1,
   },
   fieldContainer: {
     margin: 15,
   },
   heading: {
     alignItems: 'center',
-    marginBottom: 30
-  }
+    marginBottom: 30,
+  },
 });
 
 const initialValues = {
@@ -52,38 +51,36 @@ const validationSchema = yup.object().shape({
     .required('Password confirmation is required'),
 });
 
-const SignUpForm = ({ onSubmit }) => {
-  return (
-    <View>
-      <View style={styles.fieldContainer}>
-        <FormikTextInput 
-        name="email" 
-        placeholder="Email" />
-      </View>
-
-      <View style={styles.fieldContainer}>
-        <FormikTextInput
-          name="password"
-          placeholder="Password"
-          secureTextEntry
-        />
-      </View>
-
-      <View style={styles.fieldContainer}>
-        <FormikTextInput
-          name="passwordConfirmation"
-          placeholder="Password confirmation"
-          secureTextEntry
-        />
-      </View>
-
-      <Button style={styles.fieldContainer} mode='contained' onPress={onSubmit}>
-          Sign up
-      </Button>
+const SignUpForm = ({ onSubmit }) => (
+  <View>
+    <View style={styles.fieldContainer}>
+      <FormikTextInput
+        name="email"
+        placeholder="Email"
+      />
     </View>
-  );
-};
 
+    <View style={styles.fieldContainer}>
+      <FormikTextInput
+        name="password"
+        placeholder="Password"
+        secureTextEntry
+      />
+    </View>
+
+    <View style={styles.fieldContainer}>
+      <FormikTextInput
+        name="passwordConfirmation"
+        placeholder="Password confirmation"
+        secureTextEntry
+      />
+    </View>
+
+    <Button style={styles.fieldContainer} mode="contained" onPress={onSubmit}>
+      Sign up
+    </Button>
+  </View>
+);
 
 const SignUp = () => {
   const history = useHistory();
@@ -91,8 +88,7 @@ const SignUp = () => {
   const onSubmit = async (values) => {
     const { email, password } = values;
 
-    if (await SignUpWithEmail(email, password)) history.push('/choose-pic'); 
-    
+    if (await SignUpWithEmail(email, password)) history.push('/choose-pic');
   };
 
   return (
@@ -103,7 +99,7 @@ const SignUp = () => {
           Sign up with email
         </Text>
       </View>
-      
+
       <Formik
         initialValues={initialValues}
         onSubmit={onSubmit}

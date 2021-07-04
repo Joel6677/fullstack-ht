@@ -17,7 +17,7 @@ const styles = StyleSheet.create({
   },
   error: {
     borderColor: theme.colors.error,
-  }
+  },
 });
 
 const TextInput = ({ style, error, ...props }) => {

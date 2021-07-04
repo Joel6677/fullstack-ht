@@ -1,24 +1,22 @@
 import React from 'react';
-import RNTextDetector from "react-native-text-detector";
+import RNTextDetector from 'react-native-text-detector';
 import { View, StyleSheet } from 'react-native';
 import { Button } from 'react-native-paper';
 
 const styles = StyleSheet.create({
 
-    container: {
-        padding: 5,
-        height: '100%',
-        width: '100%',
-        position: 'absolute',
-        zIndex: 1,
-        paddingTop: 80,
-        paddingBottom: 60
-    }
-  });
-  
- 
+  container: {
+    padding: 5,
+    height: '100%',
+    width: '100%',
+    position: 'absolute',
+    zIndex: 1,
+    paddingTop: 80,
+    paddingBottom: 60,
+  },
+});
+
 const scanWhisky = () => {
- 
   const detectText = async () => {
     try {
       const options = {
@@ -36,10 +34,9 @@ const scanWhisky = () => {
 
   return (
     <View style={styles.container}>
-        <Button mode="outlined" onPress={()=> detectText()}>Scan whisky</Button>
+      <Button mode="outlined" onPress={() => detectText()}>Scan whisky</Button>
     </View>
   );
-
 };
 
 export default scanWhisky;

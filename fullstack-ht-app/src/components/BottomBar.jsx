@@ -1,14 +1,12 @@
-import React, { useContext } from 'react';
+import React from 'react';
 
 import {
-  StyleSheet, View
+  StyleSheet, View,
 } from 'react-native';
 
-import Constants from 'expo-constants';
 import { useHistory } from 'react-router-native';
-import theme from '../theme';
-import { StateContext } from '../state';
 import { Appbar } from 'react-native-paper';
+import theme from '../theme';
 
 const styles = StyleSheet.create({
   container: {
@@ -16,29 +14,28 @@ const styles = StyleSheet.create({
     zIndex: 6,
     position: 'absolute',
     width: '100%',
-    bottom: 0
+    bottom: 0,
   },
   appbar: {
     alignItems: 'center',
-    justifyContent: 'space-around', 
-  }
+    justifyContent: 'space-around',
+  },
 });
-
 
 const BottomBar = () => {
   const history = useHistory();
 
-  const route = (route) => {
-    history.push(route);
+  const route = (r) => {
+    history.push(r);
   };
 
   return (
 
     <View style={styles.container}>
       <Appbar.Header color={theme.colors.primary} style={styles.appbar} statusBarHeight={0}>
-        <Appbar.Action icon="home" onPress={() => route("/")} />
-        <Appbar.Action icon="magnify" onPress={() => route("/")} />
-        <Appbar.Action icon="camera" onPress={() => route("/scan-whisky")} />
+        <Appbar.Action icon="home" onPress={() => route('/')} />
+        <Appbar.Action icon="magnify" onPress={() => route('/')} />
+        <Appbar.Action icon="camera" onPress={() => route('/scan-whisky')} />
         <Appbar.Action
           icon="email"
           onPress={() => route('/myMessages')}
@@ -46,7 +43,7 @@ const BottomBar = () => {
       </Appbar.Header>
     </View>
 
-  ); 
+  );
 };
 
 export default BottomBar;

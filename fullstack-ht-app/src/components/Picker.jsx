@@ -13,7 +13,6 @@ const styles = StyleSheet.create({
 });
 
 const Picker = ({ style, ...props }) => {
-  
   const pickerStyle = { ...styles.picker, ...style };
 
   return <RNPickerSelect style={pickerStyle} {...props} />;

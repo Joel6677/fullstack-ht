@@ -7,15 +7,15 @@ const styles = StyleSheet.create({
     zIndex: 2,
     backgroundColor: '#f2eecb',
     flexDirection: 'column',
-    padding: 10
+    padding: 10,
   },
   topContainer: {
     justifyContent: 'space-between',
     flexDirection: 'row',
-    marginBottom: 10
+    marginBottom: 10,
   },
   middleContainer: {
-    marginBottom: 10
+    marginBottom: 10,
   },
   bottom: {
 
@@ -37,7 +37,6 @@ const styles = StyleSheet.create({
   },
 });
 
-
 const ReviewItem = ({ review }) => {
   const {
     name,
@@ -47,28 +46,30 @@ const ReviewItem = ({ review }) => {
     finish,
     rating,
     comment,
-    time
+    time,
   } = review;
 
   return (
-    
+
     <View style={styles.container}>
       <View style={styles.topContainer}>
-      <Image source={{ uri: imgURL}} style={styles.avatar} />
+        <Image source={{ uri: imgURL }} style={styles.avatar} />
         <Text
           style={styles.nameText}
           fontSize="subheading"
           testID="whiskyItemRating"
         >
-          User: {name}
-          </Text>
+          User:
+          {' '}
+          {name}
+        </Text>
         <Text
           style={styles.nameText}
           fontSize="subheading"
           testID="whiskyItemRating"
         >
           {time}
-          </Text>
+        </Text>
 
       </View>
 
@@ -78,21 +79,27 @@ const ReviewItem = ({ review }) => {
           fontSize="subheading"
           testID="whiskyItemNosing"
         >
-          Nosing: {nosing}
+          Nosing:
+          {' '}
+          {nosing}
         </Text>
         <Text
           style={styles.nameText}
           fontSize="subheading"
           testID="whiskyItemTaste"
         >
-          Taste: {taste}
+          Taste:
+          {' '}
+          {taste}
         </Text>
         <Text
           style={styles.nameText}
           fontSize="subheading"
           testID="whiskyItemFinish"
         >
-          Finish: {finish}
+          Finish:
+          {' '}
+          {finish}
         </Text>
       </View>
 
@@ -102,7 +109,9 @@ const ReviewItem = ({ review }) => {
           fontSize="subheading"
           testID="whiskyItemComment"
         >
-          Comment: {comment}
+          Comment:
+          {' '}
+          {comment}
         </Text>
 
         <Text
@@ -110,7 +119,10 @@ const ReviewItem = ({ review }) => {
           fontSize="subheading"
           testID="whiskyItemComment"
         >
-          Rating: {rating}/100
+          Rating:
+          {' '}
+          {rating}
+          /100
         </Text>
       </View>
     </View>

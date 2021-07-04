@@ -1,9 +1,12 @@
 import React, { useState, useEffect } from 'react';
-import { StyleSheet, View, Image, ActivityIndicator,  useWindowDimensions, ImageBackground } from 'react-native';
+import {
+  StyleSheet, View, Image, ActivityIndicator, useWindowDimensions, ImageBackground,
+} from 'react-native';
 import { Button, Avatar, Divider } from 'react-native-paper';
 import { useHistory } from 'react-router-native';
 import { TabView, SceneMap } from 'react-native-tab-view';
 
+import firebase from 'firebase/app';
 import { StateContext } from '../state';
 import Text from './Text';
 
@@ -12,10 +15,8 @@ import MyCollection from './MyCollection';
 import MyWishList from './MyWishList';
 import MyInfo from './MyInfo';
 
-import firebase from "firebase/app";
-import "firebase/auth";
-import "firebase/firestore";
-
+import 'firebase/auth';
+import 'firebase/firestore';
 
 const styles = StyleSheet.create({
   container: {
@@ -26,21 +27,16 @@ const styles = StyleSheet.create({
     flexDirection: 'column',
     position: 'absolute',
     // alignItems: 'center',
-  }, 
+  },
 
 });
-
-
 
 const renderScene = SceneMap({
   first: MyReviews,
   second: MyCollection,
   third: MyWishList,
-  fourth: MyInfo
+  fourth: MyInfo,
 });
-
-
-
 
 const Userpage = () => {
   const layout = useWindowDimensions();
@@ -49,22 +45,20 @@ const Userpage = () => {
     { key: 'first', title: 'My Reviews' },
     { key: 'second', title: 'My Collection' },
     { key: 'third', title: 'My Wish List' },
-    { key: 'fourth', title: 'My Info'}
+    { key: 'fourth', title: 'My Info' },
   ]);
-
-
 
   return (
     <View style={styles.container}>
 
-        <TabView
-          navigationState={{ index, routes }}
-          renderScene={renderScene}
-          onIndexChange={setIndex}
-          initialLayout={{ width: layout.width }}
-        />
+      <TabView
+        navigationState={{ index, routes }}
+        renderScene={renderScene}
+        onIndexChange={setIndex}
+        initialLayout={{ width: layout.width }}
+      />
 
-      </View>
+    </View>
 
   );
 };

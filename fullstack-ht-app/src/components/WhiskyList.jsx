@@ -4,7 +4,6 @@ import { useHistory } from 'react-router-native';
 import { Searchbar, Divider } from 'react-native-paper';
 import WhiskyItem from './WhiskyItem';
 import Picker from './Picker';
-// import * as firebase from 'firebase';
 import firebase from "firebase/app";
 import "firebase/auth";
 import "firebase/firestore";
@@ -186,40 +185,6 @@ const WhiskyList = () => {
 
         }
 
-        // if (searchQuery !== '') {
-        //     firebase.firestore()
-        //     .collection('whiskies')
-        //     .where('brand', '==', searchQuery)
-        //     .orderBy(`${variablesByOrderBy[orderBy].orderBy}`, `${variablesByOrderBy[orderBy].orderDirection}`)
-        //     .get()
-        //     .then((querySnapshot) => {
-        //         let posts = querySnapshot.docs.map(doc => {
-        //             const data = doc.data();
-        //             const id = doc.id;
-        //             return { id, ...data };
-        //         });
-        //         setWhiskies(posts);
-        //     })
-        //     .catch((error) => {
-        //         console.log("Error getting documents: ", error);
-        //     });
-        // } else {
-        //     firebase.firestore()
-        //     .collection('whiskies')
-        //     .orderBy(`${variablesByOrderBy[orderBy].orderBy}`, `${variablesByOrderBy[orderBy].orderDirection}`)
-        //     .get()
-        //     .then((querySnapshot) => {
-        //         let posts = querySnapshot.docs.map(doc => {
-        //             const data = doc.data();
-        //             const id = doc.id;
-        //             return { id, ...data };
-        //         });
-        //         setWhiskies(posts);
-        //     })
-        //     .catch((error) => {
-        //         console.log("Error getting documents: ", error);
-        //     });
-        // }
 
     }, [searchQuery, orderBy]);
     

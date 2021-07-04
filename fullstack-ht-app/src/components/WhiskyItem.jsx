@@ -4,20 +4,20 @@ import Text from './Text';
 
 const styles = StyleSheet.create({
   backgroundCountainer: {
-    backgroundColor: 'orange'
+    backgroundColor: 'orange',
   },
   container: {
     padding: 5,
     width: '100%',
     flexDirection: 'row',
-    backgroundColor: '#FFD700'
+    backgroundColor: '#FFD700',
   },
   contentContainer: {
     borderRadius: 5,
     width: '60%',
     flexGrow: 1,
 
-    backgroundColor: '#f2eecb'
+    backgroundColor: '#f2eecb',
   },
   middleContainer: {
     alignItems: 'center',
@@ -48,7 +48,7 @@ const styles = StyleSheet.create({
   avatar: {
     width: 120,
     height: 180,
-    borderRadius: 5
+    borderRadius: 5,
   },
   countItem: {
     flexGrow: 0,
@@ -61,16 +61,14 @@ const styles = StyleSheet.create({
   },
 });
 
-const CountItem = ({ label, count, ...props }) => {
-  return (
-    <View style={styles.countItem}>
-      <Text style={styles.countItemCount} fontWeight="bold" {...props}>
-        {count}
-      </Text>
-      <Text color="textPrimary">{label}</Text>
-    </View>
-  );
-};
+const CountItem = ({ label, count, ...props }) => (
+  <View style={styles.countItem}>
+    <Text style={styles.countItemCount} fontWeight="bold" {...props}>
+      {count}
+    </Text>
+    <Text color="textPrimary">{label}</Text>
+  </View>
+);
 
 const WhiskyItem = ({ whisky }) => {
   const {
@@ -87,55 +85,57 @@ const WhiskyItem = ({ whisky }) => {
     bottler,
   } = whisky;
 
-
-
   return (
     <View style={styles.backgroundCountainer}>
 
+      <View style={styles.container}>
 
-    <View style={styles.container}>
-      
         <View style={styles.avatarContainer}>
-          <Image source={{ uri: downloadURL}} style={styles.avatar} />
+          <Image source={{ uri: downloadURL }} style={styles.avatar} />
         </View>
         <View style={styles.contentContainer}>
-        <View style={styles.topContainer}>
-          <Text
-            style={styles.nameText}
-            testID="whiskyItemName"
-            fontSize='subheading'
-            fontWeight='bold'
-            numberOfLines={3}
-          >
-            {brand && brand + ' '}{age && age + ' '}{distillationDate && 
-            distillationDate+'/'}{bottlingDate && bottlingDate + ' '}
-            {nameAddition&& nameAddition+' '}{abv && abv+'% '}{bottleSize && bottleSize+'L'}
-          </Text>
-        </View>
-        <View style={styles.middleContainer}>
-        <Text
-            style={styles.nameText}
-            fontSize='subheading'
-            testID="whiskyItemBottlesize"
-          >
-            {bottler}
+          <View style={styles.topContainer}>
+            <Text
+              style={styles.nameText}
+              testID="whiskyItemName"
+              fontSize="subheading"
+              fontWeight="bold"
+              numberOfLines={3}
+            >
+              {brand && `${brand} `}
+              {age && `${age} `}
+              {distillationDate
+            && `${distillationDate}/`}
+              {bottlingDate && `${bottlingDate} `}
+              {nameAddition && `${nameAddition} `}
+              {abv && `${abv}% `}
+              {bottleSize && `${bottleSize}L`}
             </Text>
+          </View>
+          <View style={styles.middleContainer}>
+            <Text
+              style={styles.nameText}
+              fontSize="subheading"
+              testID="whiskyItemBottlesize"
+            >
+              {bottler}
+            </Text>
+          </View>
+          <View style={styles.bottomContainer}>
+            <CountItem
+              count={rating}
+              label="Rating"
+              testID="repositoryItemRating"
+            />
+            <CountItem
+              count={reviewCount}
+              label="Reviews"
+              testID="repositoryItemReviews"
+            />
+          </View>
         </View>
-        <View style={styles.bottomContainer}>
-        <CountItem
-          count={rating}
-          label="Rating"
-          testID="repositoryItemRating"
-        />
-        <CountItem
-          count={reviewCount}
-          label="Reviews"
-          testID="repositoryItemReviews"
-        />
-      </View>
-      </View>
 
-    </View>
+      </View>
     </View>
   );
 };
